@@ -7,160 +7,81 @@
 <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Noto+Serif+Bengali:wght@600;700&display=swap" rel="stylesheet"/>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <style>
-:root{
-  --primary:#0d7c6e;--primary-dark:#085f54;--accent:#f5a623;
-  --bg:#f4f6f8;--white:#fff;--text:#1a1a2e;--muted:#6b7280;
-  --border:#e5e7eb;--radius:12px;
-}
+:root{--primary:#0d7c6e;--primary-dark:#085f54;--accent:#f5a623;--bg:#f4f6f8;--white:#fff;--text:#1a1a2e;--muted:#6b7280;--border:#e5e7eb;--radius:12px;--danger:#ef4444;}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Hind Siliguri',sans-serif;background:var(--bg);color:var(--text)}
-
-header{
-  background:var(--primary);height:56px;
-  display:flex;align-items:center;
-  padding:0 1rem;gap:.7rem;
-  position:sticky;top:0;z-index:100;
-  box-shadow:0 2px 8px rgba(0,0,0,.2);
-}
-.back-btn{
-  background:rgba(255,255,255,.18);border:none;
-  color:#fff;font-size:1.1rem;width:36px;height:36px;
-  border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;
-}
-.header-title{
-  font-family:'Noto Serif Bengali',serif;
-  color:#fff;font-size:1.1rem;font-weight:700;flex:1;
-}
-.search-header{
-  background:rgba(255,255,255,.15);border:none;outline:none;
-  color:#fff;font-family:'Hind Siliguri',sans-serif;font-size:.9rem;
-  padding:.35rem .8rem;border-radius:50px;width:140px;
-}
+header{background:var(--primary);height:56px;display:flex;align-items:center;padding:0 1rem;gap:.7rem;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.back-btn{background:rgba(255,255,255,.18);border:none;color:#fff;font-size:1.1rem;width:36px;height:36px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.header-title{font-family:'Noto Serif Bengali',serif;color:#fff;font-size:1.1rem;font-weight:700;flex:1}
+.search-header{background:rgba(255,255,255,.15);border:none;outline:none;color:#fff;font-family:'Hind Siliguri',sans-serif;font-size:.9rem;padding:.35rem .8rem;border-radius:50px;width:140px}
 .search-header::placeholder{color:rgba(255,255,255,.6)}
-
-/* ── FILTER BAR ── */
-.filter-bar{
-  background:var(--white);border-bottom:1px solid var(--border);
-  padding:.5rem 1rem;display:flex;gap:.5rem;overflow-x:auto;
-}
+.filter-bar{background:var(--white);border-bottom:1px solid var(--border);padding:.5rem 1rem;display:flex;gap:.5rem;overflow-x:auto}
 .filter-bar::-webkit-scrollbar{display:none}
-.filter-chip{
-  background:var(--bg);border:1px solid var(--border);
-  border-radius:50px;padding:.3rem .9rem;
-  font-size:.78rem;font-weight:500;white-space:nowrap;
-  cursor:pointer;transition:all .2s;font-family:'Hind Siliguri',sans-serif;
-  color:var(--text);
-}
+.filter-chip{background:var(--bg);border:1px solid var(--border);border-radius:50px;padding:.3rem .9rem;font-size:.78rem;font-weight:500;white-space:nowrap;cursor:pointer;transition:all .2s;font-family:'Hind Siliguri',sans-serif;color:var(--text)}
 .filter-chip.active{background:var(--primary);color:#fff;border-color:var(--primary)}
-
-/* ── LIST ── */
-.list-wrap{max-width:480px;margin:0 auto;padding:.8rem 1rem 80px;}
-
-.entry-card{
-  background:var(--white);border-radius:var(--radius);
-  border:1px solid var(--border);margin-bottom:.8rem;
-  overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06);
-  transition:box-shadow .2s;
-}
+.list-wrap{max-width:480px;margin:0 auto;padding:.8rem 1rem 80px}
+.entry-card{background:var(--white);border-radius:var(--radius);border:1px solid var(--border);margin-bottom:.8rem;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06);transition:box-shadow .2s}
 .entry-card:hover{box-shadow:0 4px 12px rgba(0,0,0,.1)}
-
-.entry-img{
-  width:100%;height:160px;object-fit:cover;
-  background:linear-gradient(135deg,#e0f2f1,#b2dfdb);
-  display:flex;align-items:center;justify-content:center;
-  font-size:3rem;
-}
+.entry-img{width:100%;height:160px;object-fit:cover;background:linear-gradient(135deg,#e0f2f1,#b2dfdb);display:flex;align-items:center;justify-content:center;font-size:3rem;cursor:pointer}
 .entry-img img{width:100%;height:100%;object-fit:cover}
 .entry-body{padding:.85rem 1rem}
-
-.entry-poster{
-  display:flex;align-items:center;gap:.5rem;
-  margin-bottom:.5rem;
-}
-.poster-ava{
-  width:32px;height:32px;border-radius:50%;
-  background:var(--primary);color:#fff;
-  display:flex;align-items:center;justify-content:center;
-  font-size:.9rem;font-weight:700;flex-shrink:0;
-  overflow:hidden;
-}
-.poster-ava img{width:100%;height:100%;object-fit:cover}
-.poster-info{flex:1}
-.poster-name{font-size:.8rem;font-weight:600;color:var(--text)}
-.poster-date{font-size:.72rem;color:var(--muted)}
-
-.entry-title{
-  font-family:'Noto Serif Bengali',serif;
-  font-size:1rem;font-weight:700;color:var(--text);margin-bottom:.2rem;
-}
+.entry-title{font-family:'Noto Serif Bengali',serif;font-size:1rem;font-weight:700;color:var(--text);margin-bottom:.2rem}
 .entry-specialty{font-size:.82rem;color:var(--primary);font-weight:600;margin-bottom:.15rem}
 .entry-place{font-size:.8rem;color:var(--muted);margin-bottom:.5rem}
 .entry-desc{font-size:.85rem;color:#374151;line-height:1.65;margin-bottom:.7rem}
-
 .entry-actions{display:flex;gap:.5rem}
-.btn{
-  flex:1;padding:.5rem;border-radius:8px;border:none;
-  font-family:'Hind Siliguri',sans-serif;font-size:.82rem;
-  font-weight:600;cursor:pointer;display:flex;align-items:center;
-  justify-content:center;gap:.3rem;transition:all .2s;text-decoration:none;
-}
+.btn{flex:1;padding:.5rem;border-radius:8px;border:none;font-family:'Hind Siliguri',sans-serif;font-size:.82rem;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.3rem;transition:all .2s;text-decoration:none}
 .btn-primary{background:var(--primary);color:#fff}
 .btn-primary:hover{background:var(--primary-dark)}
 .btn-outline{background:#fff;color:var(--primary);border:1px solid var(--primary)}
 .btn-outline:hover{background:#f0faf8}
-.btn-red{background:#fff;color:#ef4444;border:1px solid #fca5a5}
-.btn-red:hover{background:#fef2f2}
-
-/* Modal */
-.modal-overlay{
-  display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);
-  z-index:200;align-items:flex-end;justify-content:center;
-}
-.modal-overlay.open{display:flex}
-.modal{
-  background:var(--white);border-radius:20px 20px 0 0;
-  width:100%;max-width:480px;padding:1.5rem 1.2rem 2rem;
-  max-height:90vh;overflow-y:auto;
-  animation:slide-up .3s ease;
-}
-@keyframes slide-up{from{transform:translateY(100%)}to{transform:translateY(0)}}
-.modal-title{
-  font-family:'Noto Serif Bengali',serif;font-size:1.1rem;font-weight:700;
-  color:var(--primary);text-align:center;margin-bottom:1rem;
-  padding-bottom:.7rem;border-bottom:2px solid var(--primary);
-}
-.detail-row{margin-bottom:.7rem}
-.detail-label{font-size:.75rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.15rem}
-.detail-val{font-size:.92rem;color:var(--text);line-height:1.6}
-.modal-actions{display:flex;gap:.6rem;margin-top:1rem}
-.btn-close-modal{
-  width:100%;background:#f3f4f6;border:none;
-  color:#ef4444;font-family:'Hind Siliguri',sans-serif;
-  font-size:.9rem;font-weight:700;padding:.7rem;
-  border-radius:8px;cursor:pointer;
-}
-
-/* Skeleton */
-.skeleton{
-  background:linear-gradient(90deg,#f0f0f0 25%,#e0e0e0 50%,#f0f0f0 75%);
-  background-size:200% 100%;animation:shimmer 1.2s infinite;
-  border-radius:6px;
-}
-@keyframes shimmer{from{background-position:200% 0}to{background-position:-200% 0}}
-
+/* FAB */
+.fab{position:fixed;bottom:70px;right:1rem;width:52px;height:52px;background:var(--primary);color:#fff;border:none;border-radius:50%;font-size:1.5rem;box-shadow:0 4px 16px rgba(13,124,110,.4);cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:90;transition:transform .2s}
+.fab:hover{transform:scale(1.08)}
+/* MODAL */
+.mo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;align-items:flex-end;justify-content:center}
+.mo.open{display:flex}
+.mc{background:var(--white);border-radius:20px 20px 0 0;width:100%;max-width:480px;padding:1.5rem 1.2rem 2rem;max-height:90vh;overflow-y:auto;animation:su .3s ease}
+@keyframes su{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.mh{width:40px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 1rem}
+.mtt{font-family:'Noto Serif Bengali',serif;font-size:1.1rem;font-weight:700;color:var(--primary);text-align:center;margin-bottom:1rem;padding-bottom:.7rem;border-bottom:2px solid var(--primary)}
+.dr{margin-bottom:.7rem}
+.dl{font-size:.74rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.12rem}
+.dv{font-size:.9rem;color:var(--text);line-height:1.6}
+.ma{display:flex;gap:.6rem;margin-top:1rem}
+.skeleton{background:linear-gradient(90deg,#f0f0f0 25%,#e0e0e0 50%,#f0f0f0 75%);background-size:200% 100%;animation:sh 1.2s infinite;border-radius:6px}
+@keyframes sh{from{background-position:200% 0}to{background-position:-200% 0}}
 .empty-state{text-align:center;padding:3rem 1rem;color:var(--muted)}
 .empty-state .big{font-size:3rem;margin-bottom:.5rem}
+/* Submit in listing */
+.ff{margin-bottom:.85rem}
+.ff label{display:block;font-size:.78rem;font-weight:600;color:var(--muted);margin-bottom:.28rem}
+.ff input,.ff select,.ff textarea{width:100%;padding:.6rem .85rem;border:1.5px solid var(--border);border-radius:var(--radius);font-family:'Hind Siliguri',sans-serif;font-size:.9rem;outline:none;transition:border-color .2s;color:var(--text)}
+.ff input:focus,.ff select:focus,.ff textarea:focus{border-color:var(--primary)}
+.ff textarea{resize:vertical;min-height:72px}
+.bf{width:100%;padding:.7rem;background:var(--primary);color:#fff;border:none;border-radius:var(--radius);font-family:'Hind Siliguri',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer}
+.bf:disabled{opacity:.6;cursor:not-allowed}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:.65rem}
+@media(max-width:360px){.g2{grid-template-columns:1fr}}
+.em{color:var(--danger);font-size:.79rem;margin-top:.35rem;display:none}
+.img-up{width:100%;height:110px;border:2px dashed var(--border);border-radius:var(--radius);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;background:#fafafa;overflow:hidden;position:relative}
+.img-up img{width:100%;height:100%;object-fit:cover;display:none;position:absolute;inset:0}
+.img-up .iph{text-align:center;color:var(--muted);font-size:.8rem;pointer-events:none}
+.iph span{display:block;font-size:1.6rem;margin-bottom:.15rem}
+#toast{position:fixed;bottom:70px;left:50%;transform:translateX(-50%);background:#1a1a2e;color:#fff;padding:.45rem 1.1rem;border-radius:50px;font-size:.83rem;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999;white-space:nowrap}
+#toast.show{opacity:1}
+#toast.ok{background:var(--primary)}
+#toast.bad{background:var(--danger)}
 </style>
 </head>
 <body>
-
 <header>
   <button class="back-btn" onclick="history.back()">←</button>
   <span class="header-title" id="pageTitle">লোড হচ্ছে...</span>
   <input class="search-header" id="searchInput" type="text" placeholder="খুঁজুন..."/>
 </header>
-
 <div class="filter-bar" id="filterBar">
   <button class="filter-chip active" data-thana="">সব উপজেলা</button>
   <button class="filter-chip" data-thana="সুনামগঞ্জ সদর">সদর</button>
@@ -176,26 +97,81 @@ header{
   <button class="filter-chip" data-thana="মধ্যনগর">মধ্যনগর</button>
   <button class="filter-chip" data-thana="দক্ষিণ সুনামগঞ্জ">দক্ষিণ সুনামগঞ্জ</button>
 </div>
+<div class="list-wrap" id="listWrap"></div>
 
-<div class="list-wrap" id="listWrap">
-  <!-- entries -->
-</div>
+<!-- FAB submit button -->
+<button class="fab" id="fabBtn" onclick="openSubModal()" title="এন্ট্রি যোগ করুন">➕</button>
 
-<!-- Detail Modal -->
-<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
-  <div class="modal" id="modal">
-    <div class="modal-title" id="modalTitle"></div>
-    <div id="modalBody"></div>
-    <div class="modal-actions">
-      <a id="modalMap" class="btn btn-outline" href="#" target="_blank">🗺️ গুগল ম্যাপ</a>
-      <a id="modalCall" class="btn btn-primary" href="#">📞 ফোন করুন</a>
-    </div>
-    <button class="btn-close-modal" onclick="document.getElementById('modalOverlay').classList.remove('open')">বন্ধ করুন</button>
+<!-- DETAIL MODAL -->
+<div class="mo" id="detMo" onclick="cib(event,'detMo')">
+ <div class="mc">
+  <div class="mh"></div>
+  <div class="mtt" id="detTitle"></div>
+  <div id="detBody"></div>
+  <div class="ma">
+   <a id="detMap" class="btn btn-outline" href="#" target="_blank">🗺️ গুগল ম্যাপ</a>
+   <a id="detCall" class="btn btn-primary" href="#">📞 ফোন করুন</a>
   </div>
+  <button style="width:100%;margin-top:.6rem;padding:.6rem;background:#f3f4f6;border:none;border-radius:var(--radius);font-family:inherit;font-size:.85rem;cursor:pointer;color:var(--text)" onclick="cm('detMo')">বন্ধ করুন</button>
+ </div>
 </div>
+
+<!-- SUBMIT MODAL (same as index) -->
+<div class="mo" id="subMo" onclick="cib(event,'subMo')">
+ <div class="mc">
+  <div class="mh"></div>
+  <div style="font-family:'Noto Serif Bengali',serif;font-size:1.1rem;font-weight:700;color:var(--primary);text-align:center;margin-bottom:.7rem">➕ নতুন তথ্য যোগ করুন</div>
+  <p style="font-size:.78rem;color:#92400e;text-align:center;background:#fef3c7;border-radius:8px;padding:.45rem;margin-bottom:.9rem">অ্যাডমিনের অনুমোদনের পর সাইটে দেখাবে</p>
+  <div class="ff">
+   <label>ছবি (ঐচ্ছিক)</label>
+   <div class="img-up" onclick="document.getElementById('lsiFile').click()">
+    <img id="lsiPrev" alt=""/>
+    <div class="iph" id="lsiPh"><span>📷</span>ছবি বেছে নিন</div>
+   </div>
+   <input type="file" id="lsiFile" accept="image/*" style="display:none" onchange="lprevSImg(event)"/>
+  </div>
+  <div class="g2">
+   <div class="ff"><label>ক্যাটাগরি *</label>
+    <select id="lsCt">
+     <option value="">বেছে নিন</option>
+     <option value="doctor">ডাক্তার</option><option value="hospital">হাসপাতাল</option>
+     <option value="diagnostic">ডায়াগনস্টিক</option><option value="tourist">দর্শনীয় স্থান</option>
+     <option value="hotel">হোটেল</option><option value="restaurant">রেস্তুরেন্ট</option>
+     <option value="job">চাকরি</option><option value="education">শিক্ষা প্রতিষ্ঠান</option>
+     <option value="transport">গাড়ি ভাড়া</option><option value="mechanic">মিস্ত্রি</option>
+     <option value="salon">পার্লার ও সেলুন</option><option value="courier">কুরিয়ার সার্ভিস</option>
+     <option value="blood">রক্তদান</option><option value="rent">বাসা ভাড়া</option>
+     <option value="matrimony">পাত্র-পাত্রী</option><option value="news">আজকের সুনামগঞ্জ</option>
+    </select>
+   </div>
+   <div class="ff"><label>উপজেলা</label>
+    <select id="lsTh">
+     <option value="">বেছে নিন</option>
+     <option>সুনামগঞ্জ সদর</option><option>ছাতক</option><option>জগন্নাথপুর</option>
+     <option>দিরাই</option><option>ধর্মপাশা</option><option>দোয়ারাবাজার</option>
+     <option>তাহিরপুর</option><option>বিশ্বম্ভরপুর</option><option>শাল্লা</option>
+     <option>জামালগঞ্জ</option><option>মধ্যনগর</option><option>দক্ষিণ সুনামগঞ্জ</option>
+    </select>
+   </div>
+  </div>
+  <div class="ff"><label>শিরোনাম / নাম *</label><input type="text" id="lsTi" placeholder="যেমন: ডাঃ সুমন রায়"/></div>
+  <div class="g2">
+   <div class="ff"><label>বিশেষজ্ঞ</label><input type="text" id="lsSp" placeholder="হৃদরোগ"/></div>
+   <div class="ff"><label>ফোন</label><input type="tel" id="lsPh" placeholder="01XXXXXXXXX"/></div>
+  </div>
+  <div class="ff"><label>ঠিকানা</label><input type="text" id="lsAd" placeholder="পূর্ণ ঠিকানা"/></div>
+  <div class="ff"><label>সময়সূচি</label><input type="text" id="lsTm" placeholder="সকাল ৯টা - বিকাল ৫টা"/></div>
+  <div class="ff"><label>গুগল ম্যাপ লিংক</label><input type="url" id="lsMp" placeholder="https://maps.google.com/..."/></div>
+  <div class="ff"><label>বিস্তারিত বিবরণ</label><textarea id="lsDc" placeholder="বিস্তারিত লিখুন..."></textarea></div>
+  <div class="em" id="lsErr"></div>
+  <button class="bf" id="lsBtn" onclick="lsubmitEntry()">📤 জমা দিন (অনুমোদনের জন্য)</button>
+  <button style="width:100%;margin-top:.45rem;padding:.55rem;background:none;border:none;color:var(--muted);font-family:inherit;font-size:.85rem;cursor:pointer" onclick="cm('subMo')">বাতিল করুন</button>
+ </div>
+</div>
+
+<div id="toast"></div>
 
 <script>
-// ── Firebase config (same as index.html) ──
 const firebaseConfig = {
   apiKey: "AIzaSyA9GwLcflSBxtQK363uo3Gnc0FV6mdZqQ0",
   authDomain: "sunamganj-zila-610da.firebaseapp.com",
@@ -206,48 +182,32 @@ const firebaseConfig = {
   measurementId: "G-QDV39Z1C1B"
 };
 firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
+const db=firebase.firestore(), auth=firebase.auth();
 
-// ── URL params ──
-const params = new URLSearchParams(location.search);
-const CAT    = params.get('cat') || '';
-const NAME   = params.get('name') || 'লিস্টিং';
-const SEARCH = params.get('search') || '';
+const params=new URLSearchParams(location.search);
+const CAT=params.get('cat')||'', NAME=params.get('name')||'লিস্টিং', SEARCH=params.get('search')||'';
+document.getElementById('pageTitle').textContent=SEARCH?`"${SEARCH}" এর ফলাফল`:NAME;
+if(SEARCH) document.getElementById('searchInput').value=SEARCH;
 
-document.getElementById('pageTitle').textContent = SEARCH ? `"${SEARCH}" এর ফলাফল` : NAME;
-if(SEARCH) document.getElementById('searchInput').value = SEARCH;
+let allEntries=[], activeThana='', searchQ=SEARCH, CU=null;
+auth.onAuthStateChanged(u=>{CU=u;});
 
-let allEntries = [];
-let activeThana = '';
-let searchQ = SEARCH;
-
-// ── Render ──
 function renderEntries(list){
-  const wrap = document.getElementById('listWrap');
-  if(!list.length){
-    wrap.innerHTML=`<div class="empty-state"><div class="big">🔍</div><p>কোনো তথ্য পাওয়া যায়নি</p></div>`;
-    return;
-  }
-  wrap.innerHTML = list.map(e=>`
+  const w=document.getElementById('listWrap');
+  if(!list.length){w.innerHTML=`<div class="empty-state"><div class="big">🔍</div><p>কোনো তথ্য পাওয়া যায়নি</p></div>`;return;}
+  w.innerHTML=list.map(e=>`
     <div class="entry-card">
-      <div class="entry-img" onclick="openModal(${JSON.stringify(e).replace(/"/g,'&quot;')})">
-        ${e.imageUrl ? `<img src="${e.imageUrl}" alt="${e.title}" loading="lazy"/>` : `<span>${e.icon||'📋'}</span>`}
+      <div class="entry-img" onclick='openDet(${JSON.stringify(e).replace(/'/g,"&#39;")})'>
+        ${e.imageUrl?`<img src="${e.imageUrl}" alt="${e.title||''}" loading="lazy"/>`:`<span>${e.icon||'📋'}</span>`}
       </div>
       <div class="entry-body">
-        <div class="entry-poster">
-          <div class="poster-ava">${e.posterName?e.posterName[0]:'A'}</div>
-          <div class="poster-info">
-            <div class="poster-name">${e.posterName||'অ্যাডমিন'}</div>
-            <div class="poster-date">${formatDate(e.createdAt)}</div>
-          </div>
-        </div>
-        <div class="entry-title">${e.title}</div>
+        <div class="entry-title">${e.title||''}</div>
         ${e.specialty?`<div class="entry-specialty">বিশেষজ্ঞঃ ${e.specialty}</div>`:''}
         ${e.thana?`<div class="entry-place">📍 ${e.thana} থানা</div>`:''}
         ${e.address?`<div class="entry-place">🏢 ${e.address}</div>`:''}
         ${e.description?`<div class="entry-desc">${e.description.substring(0,120)}${e.description.length>120?'...':''}</div>`:''}
         <div class="entry-actions">
-          <button class="btn btn-outline" onclick="openModal(${JSON.stringify(e).replace(/"/g,'&quot;')})">বিস্তারিত জানুন</button>
+          <button class="btn btn-outline" onclick='openDet(${JSON.stringify(e).replace(/'/g,"&#39;")})'>বিস্তারিত</button>
           ${e.mapUrl?`<a class="btn btn-outline" href="${e.mapUrl}" target="_blank">🗺️ ম্যাপ</a>`:''}
           ${e.phone?`<a class="btn btn-primary" href="tel:${e.phone}">📞 ফোন</a>`:''}
         </div>
@@ -255,92 +215,109 @@ function renderEntries(list){
     </div>`).join('');
 }
 
-function formatDate(ts){
-  if(!ts) return '';
-  const d = ts.toDate ? ts.toDate() : new Date(ts);
-  return d.toLocaleDateString('bn-BD',{day:'numeric',month:'short',year:'numeric'});
-}
-
-// ── Load ──
 async function loadEntries(){
-  document.getElementById('listWrap').innerHTML=`
-    <div style="padding:1rem">
-      ${[1,2,3].map(()=>`
-        <div class="entry-card" style="padding:1rem">
-          <div class="skeleton" style="height:140px;border-radius:8px;margin-bottom:.8rem"></div>
-          <div class="skeleton" style="height:16px;width:60%;margin-bottom:.5rem"></div>
-          <div class="skeleton" style="height:12px;width:80%"></div>
-        </div>`).join('')}
-    </div>`;
+  document.getElementById('listWrap').innerHTML=`<div style="padding:1rem">${[1,2,3].map(()=>`
+    <div class="entry-card" style="padding:1rem">
+      <div class="skeleton" style="height:140px;border-radius:8px;margin-bottom:.8rem"></div>
+      <div class="skeleton" style="height:16px;width:60%;margin-bottom:.5rem"></div>
+      <div class="skeleton" style="height:12px;width:80%"></div></div>`).join('')}</div>`;
   try{
-    let q = db.collection('entries');
-    if(CAT && !SEARCH) q = q.where('category','==',CAT);
-    q = q.orderBy('createdAt','desc');
-    const snap = await q.get();
-    allEntries = snap.docs.map(d=>({id:d.id,...d.data()}));
+    let q=db.collection('entries');
+    if(CAT&&!SEARCH) q=q.where('category','==',CAT);
+    q=q.orderBy('createdAt','desc');
+    const snap=await q.get();
+    allEntries=snap.docs.map(d=>({id:d.id,...d.data()}));
     applyFilters();
-  } catch(e){
+  }catch(e){
     document.getElementById('listWrap').innerHTML=
       `<div class="empty-state"><div class="big">⚠️</div><p>ডেটা লোড করতে সমস্যা হয়েছে<br><small>Firebase config সেটআপ করুন</small></p></div>`;
   }
 }
 
 function applyFilters(){
-  let list = [...allEntries];
-  if(activeThana) list = list.filter(e=>e.thana===activeThana);
-  if(searchQ) list = list.filter(e=>{
-    const q=searchQ.toLowerCase();
-    return (e.title||'').toLowerCase().includes(q)||
-           (e.description||'').toLowerCase().includes(q)||
-           (e.specialty||'').toLowerCase().includes(q)||
-           (e.address||'').toLowerCase().includes(q);
-  });
+  let list=[...allEntries];
+  if(activeThana) list=list.filter(e=>e.thana===activeThana);
+  if(searchQ){const q=searchQ.toLowerCase();
+    list=list.filter(e=>(e.title||'').toLowerCase().includes(q)||(e.description||'').toLowerCase().includes(q)||
+      (e.specialty||'').toLowerCase().includes(q)||(e.address||'').toLowerCase().includes(q));}
   renderEntries(list);
 }
 
-// ── Thana filter ──
-document.querySelectorAll('.filter-chip').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    document.querySelectorAll('.filter-chip').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    activeThana = btn.dataset.thana;
-    applyFilters();
+document.querySelectorAll('.filter-chip').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('.filter-chip').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');activeThana=b.dataset.thana;applyFilters();
   });
 });
+document.getElementById('searchInput').addEventListener('input',e=>{searchQ=e.target.value.trim();applyFilters();});
 
-// ── Search ──
-document.getElementById('searchInput').addEventListener('input',e=>{
-  searchQ = e.target.value.trim();
-  applyFilters();
-});
+// MODAL
+const om=id=>document.getElementById(id).classList.add('open');
+const cm=id=>document.getElementById(id).classList.remove('open');
+const cib=(e,id)=>{if(e.target===document.getElementById(id))cm(id);};
 
-// ── Modal ──
-function openModal(e){
-  if(typeof e === 'string') e = JSON.parse(e);
-  document.getElementById('modalTitle').textContent = e.title;
-  let html='';
-  if(e.specialty)   html+=row('বিশেষজ্ঞ',e.specialty);
-  if(e.education)   html+=row('শিক্ষাগত যোগ্যতা',e.education);
-  if(e.workplace)   html+=row('বর্তমান কর্মস্থল',e.workplace);
-  if(e.chambers)    html+=row('চেম্বার',e.chambers);
-  if(e.thana)       html+=row('থানা',e.thana);
-  if(e.address)     html+=row('ঠিকানা',e.address);
-  if(e.timing)      html+=row('সময়সূচি',e.timing);
-  if(e.phone)       html+=row('ফোন',e.phone);
-  if(e.description) html+=row('বিস্তারিত',e.description);
-  document.getElementById('modalBody').innerHTML=html;
-  const mapBtn=document.getElementById('modalMap');
-  const callBtn=document.getElementById('modalCall');
-  mapBtn.href=e.mapUrl||'#'; mapBtn.style.display=e.mapUrl?'':'none';
-  callBtn.href=e.phone?`tel:${e.phone}`:'#'; callBtn.style.display=e.phone?'':'none';
-  document.getElementById('modalOverlay').classList.add('open');
+function openDet(e){
+  if(typeof e==='string') e=JSON.parse(e);
+  document.getElementById('detTitle').textContent=e.title||'';
+  let h='';
+  if(e.specialty) h+=row('বিশেষজ্ঞ',e.specialty);
+  if(e.education) h+=row('শিক্ষাগত যোগ্যতা',e.education);
+  if(e.workplace) h+=row('বর্তমান কর্মস্থল',e.workplace);
+  if(e.chambers)  h+=row('চেম্বার',e.chambers);
+  if(e.thana)     h+=row('থানা',e.thana);
+  if(e.address)   h+=row('ঠিকানা',e.address);
+  if(e.timing)    h+=row('সময়সূচি',e.timing);
+  if(e.phone)     h+=row('ফোন',e.phone);
+  if(e.description) h+=row('বিস্তারিত',e.description);
+  document.getElementById('detBody').innerHTML=h;
+  const mb=document.getElementById('detMap'), cb=document.getElementById('detCall');
+  mb.href=e.mapUrl||'#'; mb.style.display=e.mapUrl?'':'none';
+  cb.href=e.phone?`tel:${e.phone}`:'#'; cb.style.display=e.phone?'':'none';
+  om('detMo');
 }
-function row(label,val){
-  return `<div class="detail-row"><div class="detail-label">${label}</div><div class="detail-val">${val}</div></div>`;
+function row(label,val){return `<div class="dr"><div class="dl">${label}</div><div class="dv">${val}</div></div>`;}
+
+// SUBMIT from listing page
+let lsiFile=null;
+function lprevSImg(e){
+  const f=e.target.files[0];if(!f)return;lsiFile=f;
+  const r=new FileReader();
+  r.onload=ev=>{const i=document.getElementById('lsiPrev');i.src=ev.target.result;i.style.display='block';
+    document.getElementById('lsiPh').style.display='none';};r.readAsDataURL(f);
 }
-function closeModal(e){
-  if(e.target===document.getElementById('modalOverlay'))
-    document.getElementById('modalOverlay').classList.remove('open');
+
+function openSubModal(){
+  if(!CU){location.href='index.html';return;}
+  om('subMo');
+}
+
+async function lsubmitEntry(){
+  const ct=document.getElementById('lsCt').value, ti=document.getElementById('lsTi').value.trim();
+  const er=document.getElementById('lsErr');er.style.display='none';
+  if(!ct||!ti){er.textContent='ক্যাটাগরি ও শিরোনাম আবশ্যক';er.style.display='block';return;}
+  const b=document.getElementById('lsBtn');b.disabled=true;b.textContent='জমা দেওয়া হচ্ছে...';
+  try{
+    let imageUrl='';
+    if(lsiFile){const r=new FileReader();imageUrl=await new Promise((res,rej)=>{r.onload=()=>res(r.result);r.onerror=rej;r.readAsDataURL(lsiFile);});}
+    await db.collection('pending').add({
+      category:ct,title:ti,thana:document.getElementById('lsTh').value,
+      specialty:document.getElementById('lsSp').value.trim(),phone:document.getElementById('lsPh').value.trim(),
+      address:document.getElementById('lsAd').value.trim(),timing:document.getElementById('lsTm').value.trim(),
+      mapUrl:document.getElementById('lsMp').value.trim(),description:document.getElementById('lsDc').value.trim(),
+      imageUrl,submittedBy:CU.uid,status:'pending',
+      submittedAt:firebase.firestore.FieldValue.serverTimestamp(),
+    });
+    cm('subMo');
+    ['lsCt','lsTh','lsTi','lsSp','lsPh','lsAd','lsTm','lsMp','lsDc'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('lsiPrev').style.display='none';document.getElementById('lsiPh').style.display='';lsiFile=null;
+    showToast('জমা দেওয়া হয়েছে! অনুমোদনের অপেক্ষায় 📤','ok');
+  }catch(e){er.textContent='সমস্যা: '+e.message;er.style.display='block';}
+  b.disabled=false;b.textContent='📤 জমা দিন (অনুমোদনের জন্য)';
+}
+
+function showToast(msg,type=''){
+  const t=document.getElementById('toast');t.textContent=msg;t.className='show '+(type||'');
+  setTimeout(()=>t.className='',2800);
 }
 
 loadEntries();
