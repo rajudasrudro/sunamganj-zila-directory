@@ -1,0 +1,14 @@
+{
+  "name": "সুনামগঞ্জ জিলা",
+  "short_name": "সুনামগঞ্জ",
+  "description": "সুনামগঞ্জ জিলা লোকাল ডিরেক্টরি",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#f4f6f8",
+  "theme_color": "#0d7c6e",
+  "orientation": "portrait",
+  "icons": [
+    {"src": "https://via.placeholder.com/192x192/0d7c6e/ffffff?text=SZ", "sizes": "192x192", "type": "image/png"},
+    {"src": "https://via.placeholder.com/512x512/0d7c6e/ffffff?text=SZ", "sizes": "512x512", "type": "image/png"}
+  ]
+}

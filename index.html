@@ -3,58 +3,82 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="theme-color" content="#0d7c6e"/>
+<meta name="description" content="সুনামগঞ্জ জিলা লোকাল ডিরেক্টরি — ডাক্তার, হাসপাতাল, দর্শনীয় স্থান"/>
+<link rel="manifest" href="manifest.json"/>
 <title>সুনামগঞ্জ জিলা — লোকাল ডিরেক্টরি</title>
 <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Noto+Serif+Bengali:wght@600;700&display=swap" rel="stylesheet"/>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <style>
-:root{
-  --primary:#0d7c6e;--primary-dark:#085f54;--accent:#f5a623;
-  --bg:#f4f6f8;--white:#fff;--text:#1a1a2e;--muted:#6b7280;
-  --card:#fff;--border:#e5e7eb;--radius:12px;--danger:#ef4444;
-}
+:root{--primary:#0d7c6e;--primary-dark:#085f54;--accent:#f5a623;--bg:#f4f6f8;--white:#fff;--text:#1a1a2e;--muted:#6b7280;--card:#fff;--border:#e5e7eb;--radius:12px;--danger:#ef4444;}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Hind Siliguri',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+/* HEADER */
 header{background:var(--primary);padding:0 1rem;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.2)}
 .header-inner{max-width:480px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:56px}
 .header-logo{font-family:'Noto Serif Bengali',serif;font-size:1.2rem;font-weight:700;color:#fff;text-decoration:none;display:flex;align-items:center;gap:.4rem}
 .header-logo span{color:var(--accent)}
 .header-actions{display:flex;gap:.5rem}
-.btn-icon{background:rgba(255,255,255,.15);border:none;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;font-size:1.1rem;text-decoration:none}
+.btn-icon{background:rgba(255,255,255,.15);border:none;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;font-size:1.1rem;text-decoration:none;position:relative}
 .btn-icon:hover{background:rgba(255,255,255,.25)}
+/* TICKER */
 .ticker-wrap{background:var(--primary-dark);padding:.4rem 1rem;overflow:hidden}
 .ticker-inner{max-width:480px;margin:0 auto;display:flex;align-items:center;gap:.6rem}
 .ticker-label{background:var(--accent);color:#fff;font-size:.7rem;font-weight:700;padding:.15rem .5rem;border-radius:4px;white-space:nowrap}
-.ticker-text{color:rgba(255,255,255,.9);font-size:.82rem;white-space:nowrap;overflow:hidden;animation:ticker 20s linear infinite}
+.ticker-text{color:rgba(255,255,255,.9);font-size:.82rem;white-space:nowrap;overflow:hidden;animation:ticker 25s linear infinite}
 @keyframes ticker{from{transform:translateX(100%)}to{transform:translateX(-100%)}}
+/* SEARCH */
 .search-wrap{max-width:480px;margin:0 auto;padding:.8rem 1rem}
 .search-box{display:flex;align-items:center;gap:.5rem;background:var(--white);border-radius:50px;border:2px solid var(--border);padding:.5rem 1rem;box-shadow:0 2px 8px rgba(0,0,0,.06);transition:border-color .2s}
 .search-box:focus-within{border-color:var(--primary)}
 .search-box input{border:none;outline:none;width:100%;font-family:'Hind Siliguri',sans-serif;font-size:.95rem;color:var(--text);background:transparent}
 .search-box .ico{color:var(--muted);font-size:1.1rem}
-.banner-wrap{max-width:480px;margin:0 auto;padding:0 1rem .8rem}
-.banner{border-radius:var(--radius);overflow:hidden;height:130px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));display:flex;align-items:center;justify-content:center;position:relative;box-shadow:0 4px 12px rgba(0,0,0,.1)}
-.banner img{width:100%;height:100%;object-fit:cover}
-.banner-placeholder{color:rgba(255,255,255,.5);font-size:.85rem;text-align:center;padding:1rem}
+/* BANNER SLIDER */
+.banner-wrap{max-width:480px;margin:0 auto;padding:0 1rem .8rem;position:relative}
+.banner-slider{border-radius:var(--radius);overflow:hidden;height:130px;position:relative;box-shadow:0 4px 12px rgba(0,0,0,.1);background:linear-gradient(135deg,var(--primary),var(--primary-dark))}
+.banner-slide{position:absolute;inset:0;opacity:0;transition:opacity .6s ease;display:flex;align-items:center;justify-content:center}
+.banner-slide.active{opacity:1}
+.banner-slide img{width:100%;height:100%;object-fit:cover}
+.banner-placeholder{color:rgba(255,255,255,.6);font-size:.85rem;text-align:center;padding:1rem}
+.banner-dots{position:absolute;bottom:6px;left:50%;transform:translateX(-50%);display:flex;gap:5px;z-index:2}
+.banner-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.5);transition:background .3s;cursor:pointer}
+.banner-dot.active{background:#fff}
+/* CATS */
 .section-title{max-width:480px;margin:0 auto;padding:.2rem 1rem .6rem;font-size:.8rem;font-weight:600;color:var(--muted);letter-spacing:.05em;text-transform:uppercase}
 .cats-grid{max-width:480px;margin:0 auto;padding:0 .6rem .5rem;display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem}
 .cat-item{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:.7rem .3rem;display:flex;flex-direction:column;align-items:center;gap:.35rem;cursor:pointer;text-decoration:none;color:var(--text);transition:all .2s;box-shadow:0 1px 4px rgba(0,0,0,.05)}
 .cat-item:hover,.cat-item:active{border-color:var(--primary);background:#f0faf8;transform:translateY(-2px);box-shadow:0 4px 12px rgba(13,124,110,.12)}
 .cat-icon{font-size:1.8rem;line-height:1}
 .cat-name{font-size:.72rem;font-weight:600;text-align:center;line-height:1.3;color:var(--text)}
+/* BOTTOM NAV */
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:100;background:var(--white);border-top:1px solid var(--border);display:flex;justify-content:space-around;align-items:center;height:58px;box-shadow:0 -2px 10px rgba(0,0,0,.08)}
 .nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;text-decoration:none;color:var(--muted);font-size:.65rem;font-weight:500;padding:.3rem 0;transition:color .2s;cursor:pointer;border:none;background:none;font-family:inherit}
 .nav-item.active,.nav-item:hover{color:var(--primary)}
 .nav-item .nav-ico{font-size:1.3rem}
 .page-pad{padding-bottom:70px}
-/* MODAL */
+/* EMERGENCY FLOAT BUTTON */
+.emergency-fab{position:fixed;bottom:70px;right:1rem;width:52px;height:52px;background:#ef4444;color:#fff;border:none;border-radius:50%;font-size:1.4rem;box-shadow:0 4px 16px rgba(239,68,68,.5);cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:90;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 4px 16px rgba(239,68,68,.5)}50%{box-shadow:0 4px 24px rgba(239,68,68,.8),0 0 0 8px rgba(239,68,68,.15)}}
+/* MODALS */
 .mo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:200;align-items:flex-end;justify-content:center}
 .mo.open{display:flex}
 .mc{background:var(--white);border-radius:20px 20px 0 0;width:100%;max-width:480px;padding:1.4rem 1.2rem 2rem;max-height:92vh;overflow-y:auto;animation:su .3s ease}
 @keyframes su{from{transform:translateY(100%)}to{transform:translateY(0)}}
 .mh{width:40px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 1.1rem}
 .mt{font-family:'Noto Serif Bengali',serif;font-size:1.1rem;font-weight:700;color:var(--primary);text-align:center;margin-bottom:1rem}
+/* EMERGENCY NUMBERS */
+.emg-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+.emg-card{background:linear-gradient(135deg,#ef4444,#dc2626);border-radius:12px;padding:1rem;text-align:center;color:#fff;text-decoration:none;display:block;transition:transform .2s}
+.emg-card:hover{transform:scale(1.03)}
+.emg-card .emg-ico{font-size:2rem;margin-bottom:.3rem}
+.emg-card .emg-num{font-size:1.3rem;font-weight:700;font-family:'Noto Serif Bengali',serif}
+.emg-card .emg-lbl{font-size:.75rem;opacity:.9}
+.emg-card.green{background:linear-gradient(135deg,#10b981,#059669)}
+.emg-card.blue{background:linear-gradient(135deg,#3b82f6,#2563eb)}
+.emg-card.orange{background:linear-gradient(135deg,#f59e0b,#d97706)}
+/* AUTH */
 .auth-tabs{display:flex;border:1.5px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:1rem}
 .at{flex:1;padding:.52rem;text-align:center;font-family:'Hind Siliguri',sans-serif;font-size:.88rem;font-weight:600;cursor:pointer;border:none;background:none;color:var(--muted);transition:all .2s}
 .at.active{background:var(--primary);color:#fff}
@@ -78,6 +102,13 @@ header{background:var(--primary);padding:0 1rem;position:sticky;top:0;z-index:10
 .img-up img{width:100%;height:100%;object-fit:cover;display:none;position:absolute;inset:0}
 .img-up .iph{text-align:center;color:var(--muted);font-size:.8rem;pointer-events:none}
 .iph span{display:block;font-size:1.6rem;margin-bottom:.15rem}
+/* PWA INSTALL BANNER */
+#pwaBanner{display:none;background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;padding:.7rem 1rem;max-width:480px;margin:0 auto;border-radius:var(--radius);margin-bottom:.5rem;align-items:center;gap:.7rem}
+#pwaBanner.show{display:flex}
+#pwaBanner p{flex:1;font-size:.82rem;line-height:1.4}
+#pwaBanner button{background:var(--accent);color:#fff;border:none;border-radius:8px;padding:.4rem .9rem;font-family:'Hind Siliguri',sans-serif;font-size:.8rem;font-weight:700;cursor:pointer;white-space:nowrap}
+#pwaBanner .close-pwa{background:none;padding:.2rem .5rem;opacity:.7}
+/* TOAST */
 #toast{position:fixed;bottom:70px;left:50%;transform:translateX(-50%);background:#1a1a2e;color:#fff;padding:.45rem 1.1rem;border-radius:50px;font-size:.83rem;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999;white-space:nowrap}
 #toast.show{opacity:1}
 #toast.ok{background:var(--primary)}
@@ -94,11 +125,36 @@ header{background:var(--primary);padding:0 1rem;position:sticky;top:0;z-index:10
     </div>
   </div>
 </header>
+
 <div class="ticker-wrap"><div class="ticker-inner"><span class="ticker-label">নোটিশ</span><div class="ticker-text" id="tickerText">স্বাগতম! সুনামগঞ্জ জিলা লোকাল ডিরেক্টরিতে আপনাকে স্বাগতম।</div></div></div>
+
 <div class="search-wrap"><div class="search-box"><span class="ico">🔍</span><input type="text" id="searchInput" placeholder="খুঁজুন (ডাক্তার, হাসপাতাল, স্থান...)"/></div></div>
-<div class="banner-wrap"><div class="banner" id="heroBanner"><div class="banner-placeholder">বিজ্ঞাপন / ব্যানার<br><small>অ্যাডমিন থেকে পরিবর্তন করুন</small></div></div></div>
+
+<!-- PWA Install Banner -->
+<div style="max-width:480px;margin:0 auto;padding:0 1rem">
+  <div id="pwaBanner">
+    <p>📱 এই সাইটটি অ্যাপ হিসেবে ইন্সটল করুন — ইন্টারনেট ছাড়াও ব্যবহার করুন!</p>
+    <button onclick="installPWA()">ইন্সটল করুন</button>
+    <button class="close-pwa" onclick="document.getElementById('pwaBanner').classList.remove('show')">✕</button>
+  </div>
+</div>
+
+<!-- Banner Slider -->
+<div class="banner-wrap">
+  <div class="banner-slider" id="bannerSlider">
+    <div class="banner-slide active" id="slide0">
+      <div class="banner-placeholder">বিজ্ঞাপন / ব্যানার<br><small>অ্যাডমিন থেকে পরিবর্তন করুন</small></div>
+    </div>
+  </div>
+  <div class="banner-dots" id="bannerDots"></div>
+</div>
+
 <div class="section-title">সকল সেবা</div>
 <div class="cats-grid page-pad" id="catsGrid"></div>
+
+<!-- Emergency FAB -->
+<button class="emergency-fab" onclick="om('emgMo')" title="জরুরি নম্বর">🆘</button>
+
 <div id="toast"></div>
 
 <nav class="bottom-nav">
@@ -107,6 +163,24 @@ header{background:var(--primary);padding:0 1rem;position:sticky;top:0;z-index:10
   <button class="nav-item" onclick="openSubmitModal()"><span class="nav-ico">➕</span>যোগ করুন</button>
   <button class="nav-item" id="profileNavBtn" onclick="openAuthOrProfile()"><span class="nav-ico">👤</span><span id="profileNavLabel">লগইন</span></button>
 </nav>
+
+<!-- EMERGENCY MODAL -->
+<div class="mo" id="emgMo" onclick="cib(event,'emgMo')">
+ <div class="mc">
+  <div class="mh"></div>
+  <div class="mt" style="color:#ef4444">🆘 জরুরি নম্বর সমূহ</div>
+  <div class="emg-grid">
+   <a class="emg-card" href="tel:999"><div class="emg-ico">👮</div><div class="emg-num">999</div><div class="emg-lbl">পুলিশ</div></a>
+   <a class="emg-card green" href="tel:16555"><div class="emg-ico">🚑</div><div class="emg-num">16555</div><div class="emg-lbl">স্বাস্থ্য সেবা</div></a>
+   <a class="emg-card orange" href="tel:16163"><div class="emg-ico">🔥</div><div class="emg-num">16163</div><div class="emg-lbl">ফায়ার সার্ভিস</div></a>
+   <a class="emg-card blue" href="tel:1090"><div class="emg-ico">⚡</div><div class="emg-num">1090</div><div class="emg-lbl">বিদ্যুৎ জরুরি</div></a>
+   <a class="emg-card" href="tel:10921"><div class="emg-ico">🏥</div><div class="emg-num">10921</div><div class="emg-lbl">সদর হাসপাতাল</div></a>
+   <a class="emg-card green" href="tel:10940"><div class="emg-ico">🚨</div><div class="emg-num">10940</div><div class="emg-lbl">র‌্যাব</div></a>
+  </div>
+  <p style="font-size:.75rem;color:var(--muted);text-align:center;margin-top:.8rem">নম্বরে ট্যাপ করলে সরাসরি কল হবে</p>
+  <button style="width:100%;margin-top:.8rem;padding:.6rem;background:#f3f4f6;border:none;border-radius:var(--radius);font-family:inherit;font-size:.88rem;cursor:pointer" onclick="cm('emgMo')">বন্ধ করুন</button>
+ </div>
+</div>
 
 <!-- AUTH MODAL -->
 <div class="mo" id="authMo" onclick="cib(event,'authMo')">
@@ -117,7 +191,6 @@ header{background:var(--primary);padding:0 1rem;position:sticky;top:0;z-index:10
     <button class="at active" id="tabL" onclick="swTab('l')">লগইন</button>
     <button class="at" id="tabR" onclick="swTab('r')">নিবন্ধন</button>
    </div>
-   <!-- LOGIN -->
    <div id="fL">
     <div class="mt">আপনার অ্যাকাউন্টে প্রবেশ করুন</div>
     <div class="ff"><label>ইমেইল</label><input type="email" id="lEm" placeholder="example@email.com"/></div>
@@ -126,7 +199,6 @@ header{background:var(--primary);padding:0 1rem;position:sticky;top:0;z-index:10
     <button class="bf" id="lBtn" onclick="doLogin()">লগইন করুন</button>
     <p style="text-align:center;margin-top:.7rem;font-size:.8rem;color:var(--muted)">অ্যাকাউন্ট নেই? <span style="color:var(--primary);cursor:pointer;font-weight:600" onclick="swTab('r')">নিবন্ধন করুন</span></p>
    </div>
-   <!-- REGISTER -->
    <div id="fR" style="display:none">
     <div class="mt">নতুন অ্যাকাউন্ট তৈরি করুন</div>
     <div class="ff"><label>আপনার নাম</label><input type="text" id="rNm" placeholder="নাম"/></div>
@@ -137,7 +209,6 @@ header{background:var(--primary);padding:0 1rem;position:sticky;top:0;z-index:10
     <p style="text-align:center;margin-top:.7rem;font-size:.8rem;color:var(--muted)">আগে থেকে অ্যাকাউন্ট আছে? <span style="color:var(--primary);cursor:pointer;font-weight:600" onclick="swTab('l')">লগইন করুন</span></p>
    </div>
   </div>
-  <!-- PROFILE -->
   <div id="profPanel" style="display:none">
    <div class="prof-card">
     <div class="prof-av">👤</div>
@@ -162,15 +233,13 @@ header{background:var(--primary);padding:0 1rem;position:sticky;top:0;z-index:10
   <div class="ff">
    <label>ছবি (ঐচ্ছিক)</label>
    <div class="img-up" onclick="document.getElementById('siFile').click()">
-    <img id="siPrev" alt=""/>
-    <div class="iph" id="siPh"><span>📷</span>ছবি বেছে নিন</div>
+    <img id="siPrev" alt=""/><div class="iph" id="siPh"><span>📷</span>ছবি বেছে নিন</div>
    </div>
    <input type="file" id="siFile" accept="image/*" style="display:none" onchange="prevSImg(event)"/>
   </div>
   <div class="g2">
    <div class="ff"><label>ক্যাটাগরি *</label>
-    <select id="sCt">
-     <option value="">বেছে নিন</option>
+    <select id="sCt"><option value="">বেছে নিন</option>
      <option value="doctor">ডাক্তার</option><option value="hospital">হাসপাতাল</option>
      <option value="diagnostic">ডায়াগনস্টিক</option><option value="blood">রক্তদান</option>
      <option value="transport">গাড়ি ভাড়া</option><option value="emergency">জরুরী নাম্বার</option>
@@ -186,8 +255,7 @@ header{background:var(--primary);padding:0 1rem;position:sticky;top:0;z-index:10
     </select>
    </div>
    <div class="ff"><label>উপজেলা</label>
-    <select id="sTh">
-     <option value="">বেছে নিন</option>
+    <select id="sTh"><option value="">বেছে নিন</option>
      <option>সুনামগঞ্জ সদর</option><option>ছাতক</option><option>জগন্নাথপুর</option>
      <option>দিরাই</option><option>ধর্মপাশা</option><option>দোয়ারাবাজার</option>
      <option>তাহিরপুর</option><option>বিশ্বম্ভরপুর</option><option>শাল্লা</option>
@@ -233,6 +301,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db=firebase.firestore(), auth=firebase.auth();
 
+// ── CATEGORIES ──
 const DEFAULT_CATS=[
   {id:'doctor',icon:'👨‍⚕️',name:'ডাক্তার'},{id:'hospital',icon:'🏥',name:'হাসপাতাল'},
   {id:'diagnostic',icon:'🔬',name:'ডায়াগনস্টিক'},{id:'blood',icon:'🩸',name:'রক্তদান'},
@@ -251,7 +320,6 @@ const DEFAULT_CATS=[
   {id:'matrimony',icon:'💒',name:'পাত্র-পাত্রী'},{id:'salon',icon:'💇',name:'পার্লার ও সেলুন'},
   {id:'website',icon:'🌐',name:'ওয়েবসাইট'},{id:'rep',icon:'🤝',name:'জনপ্রতিনিধি'},
 ];
-
 function renderCats(cats){
   document.getElementById('catsGrid').innerHTML=cats.map(c=>
     `<a class="cat-item" href="listing.html?cat=${c.id}&name=${encodeURIComponent(c.name)}">
@@ -262,31 +330,64 @@ async function loadCats(){
     s.empty?renderCats(DEFAULT_CATS):renderCats(s.docs.map(d=>({id:d.id,...d.data()})));
   }catch{renderCats(DEFAULT_CATS);}
 }
+
+// ── BANNER SLIDER ──
+let bannerSlides=[], bannerIdx=0, bannerTimer=null;
+async function loadBanners(){
+  try{
+    const snap=await db.collection('banners').where('active','==',true).orderBy('order').get();
+    if(snap.empty) return;
+    bannerSlides=snap.docs.map(d=>d.data());
+    const slider=document.getElementById('bannerSlider');
+    const dots=document.getElementById('bannerDots');
+    slider.innerHTML='';dots.innerHTML='';
+    bannerSlides.forEach((b,i)=>{
+      const slide=document.createElement('div');
+      slide.className='banner-slide'+(i===0?' active':'');
+      slide.innerHTML=b.imageUrl?`<img src="${b.imageUrl}" alt="${b.title||''}"/>`
+        :`<div class="banner-placeholder">${b.title||'বিজ্ঞাপন'}</div>`;
+      if(b.linkUrl) slide.style.cursor='pointer', slide.onclick=()=>window.open(b.linkUrl,'_blank');
+      slider.appendChild(slide);
+      const dot=document.createElement('div');
+      dot.className='banner-dot'+(i===0?' active':'');
+      dot.onclick=()=>goBanner(i);
+      dots.appendChild(dot);
+    });
+    if(bannerSlides.length>1) bannerTimer=setInterval(()=>goBanner((bannerIdx+1)%bannerSlides.length),4000);
+  }catch{}
+}
+function goBanner(idx){
+  const slides=document.querySelectorAll('.banner-slide');
+  const dots=document.querySelectorAll('.banner-dot');
+  if(!slides.length) return;
+  slides[bannerIdx]?.classList.remove('active');
+  dots[bannerIdx]?.classList.remove('active');
+  bannerIdx=idx;
+  slides[bannerIdx]?.classList.add('active');
+  dots[bannerIdx]?.classList.add('active');
+}
+
+// ── TICKER ──
 async function loadTicker(){
   try{const d=await db.collection('settings').doc('site').get();
     if(d.exists&&d.data().ticker) document.getElementById('tickerText').textContent=d.data().ticker;
   }catch{}
 }
+
+// ── SEARCH ──
 document.getElementById('searchInput').addEventListener('keydown',e=>{
   if(e.key==='Enter'&&e.target.value.trim())
     location.href='listing.html?search='+encodeURIComponent(e.target.value.trim());
 });
-loadCats();loadTicker();
 
-// AUTH STATE
+// ── AUTH ──
 let CU=null;
-auth.onAuthStateChanged(async u=>{
+auth.onAuthStateChanged(u=>{
   CU=u;
-  if(u){
-    document.getElementById('profileNavLabel').textContent='প্রোফাইল';
-    document.getElementById('hUserBtn').textContent='😊';
-  } else {
-    document.getElementById('profileNavLabel').textContent='লগইন';
-    document.getElementById('hUserBtn').textContent='👤';
-  }
+  document.getElementById('profileNavLabel').textContent=u?'প্রোফাইল':'লগইন';
+  document.getElementById('hUserBtn').textContent=u?'😊':'👤';
 });
 
-// MODAL UTILS
 const om=id=>document.getElementById(id).classList.add('open');
 const cm=id=>document.getElementById(id).classList.remove('open');
 const cib=(e,id)=>{if(e.target===document.getElementById(id))cm(id);};
@@ -304,120 +405,94 @@ function openAuthOrProfile(){
   }
   om('authMo');
 }
-
 function swTab(t){
   document.getElementById('tabL').classList.toggle('active',t==='l');
   document.getElementById('tabR').classList.toggle('active',t==='r');
   document.getElementById('fL').style.display=t==='l'?'':'none';
   document.getElementById('fR').style.display=t==='r'?'':'none';
 }
-
 async function doLogin(){
-  const em=document.getElementById('lEm').value.trim();
-  const pw=document.getElementById('lPw').value;
-  const er=document.getElementById('lErr');
-  er.style.display='none';
+  const em=document.getElementById('lEm').value.trim(), pw=document.getElementById('lPw').value;
+  const er=document.getElementById('lErr'); er.style.display='none';
   if(!em||!pw){er.textContent='সব তথ্য পূরণ করুন';er.style.display='block';return;}
   const b=document.getElementById('lBtn');b.disabled=true;b.textContent='লগইন হচ্ছে...';
   try{
     await auth.signInWithEmailAndPassword(em,pw);
     cm('authMo');showToast('লগইন সফল হয়েছে ✅','ok');
   }catch(e){
-    const m={'auth/user-not-found':'ইমেইল পাওয়া যায়নি','auth/wrong-password':'পাসওয়ার্ড ভুল',
+    const m={'auth/user-not-found':'এই ইমেইলে কোনো অ্যাকাউন্ট নেই','auth/wrong-password':'পাসওয়ার্ড ভুল',
       'auth/invalid-email':'ইমেইল সঠিক নয়','auth/invalid-credential':'ইমেইল বা পাসওয়ার্ড ভুল',
-      'auth/too-many-requests':'অনেকবার চেষ্টা হয়েছে, পরে চেষ্টা করুন'};
-    er.textContent=m[e.code]||'লগইন সমস্যা হয়েছে';er.style.display='block';
+      'auth/too-many-requests':'অনেকবার চেষ্টা হয়েছে, পরে চেষ্টা করুন',
+      'auth/network-request-failed':'ইন্টারনেট সংযোগ সমস্যা',
+      'auth/unauthorized-domain':'Domain Firebase-এ যোগ করুন'};
+    er.textContent=m[e.code]||('কোড: '+e.code);er.style.display='block';
   }
   b.disabled=false;b.textContent='লগইন করুন';
 }
-
 async function doRegister(){
-  const nm=document.getElementById('rNm').value.trim();
-  const em=document.getElementById('rEm').value.trim();
-  const pw=document.getElementById('rPw').value;
-  const er=document.getElementById('rErr');
-  er.style.display='none';
+  const nm=document.getElementById('rNm').value.trim(), em=document.getElementById('rEm').value.trim(), pw=document.getElementById('rPw').value;
+  const er=document.getElementById('rErr'); er.style.display='none';
   if(!nm||!em||!pw){er.textContent='সব তথ্য পূরণ করুন';er.style.display='block';return;}
-  if(pw.length<6){er.textContent='পাসওয়ার্ড কমপক্ষে ৬ অক্ষর হতে হবে';er.style.display='block';return;}
+  if(pw.length<6){er.textContent='পাসওয়ার্ড কমপক্ষে ৬ অক্ষর';er.style.display='block';return;}
   const b=document.getElementById('rBtn');b.disabled=true;b.textContent='নিবন্ধন হচ্ছে...';
   try{
     const c=await auth.createUserWithEmailAndPassword(em,pw);
     await c.user.updateProfile({displayName:nm});
-    await db.collection('users').doc(c.user.uid).set(
-      {name:nm,email:em,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
+    try{await db.collection('users').doc(c.user.uid).set({name:nm,email:em,createdAt:firebase.firestore.FieldValue.serverTimestamp()});}catch{}
     cm('authMo');showToast('নিবন্ধন সফল! স্বাগতম 🎉','ok');
   }catch(e){
     const m={'auth/email-already-in-use':'এই ইমেইল দিয়ে আগেই অ্যাকাউন্ট আছে',
-      'auth/invalid-email':'ইমেইল সঠিক নয়','auth/weak-password':'পাসওয়ার্ড দুর্বল'};
-    er.textContent=m[e.code]||'নিবন্ধন সমস্যা হয়েছে';er.style.display='block';
+      'auth/invalid-email':'ইমেইল সঠিক নয়','auth/weak-password':'পাসওয়ার্ড দুর্বল',
+      'auth/network-request-failed':'ইন্টারনেট সংযোগ সমস্যা',
+      'auth/unauthorized-domain':'Domain Firebase-এ Authorized domains-এ যোগ করুন',
+      'auth/admin-restricted-operation':'Firebase Console-এ Email/Password চালু করুন'};
+    er.textContent=m[e.code]||('কোড: '+e.code);er.style.display='block';
   }
   b.disabled=false;b.textContent='নিবন্ধন করুন';
 }
+async function doLogout(){await auth.signOut();cm('authMo');showToast('লগআউট হয়েছে','ok');}
 
-async function doLogout(){
-  await auth.signOut();cm('authMo');showToast('লগআউট হয়েছে','ok');
-}
-
-// SUBMIT
+// ── SUBMIT ──
 let siFile=null;
 function prevSImg(e){
   const f=e.target.files[0];if(!f)return;siFile=f;
   const r=new FileReader();
-  r.onload=ev=>{
-    const i=document.getElementById('siPrev');i.src=ev.target.result;i.style.display='block';
-    document.getElementById('siPh').style.display='none';
-  };r.readAsDataURL(f);
+  r.onload=ev=>{const i=document.getElementById('siPrev');i.src=ev.target.result;i.style.display='block';document.getElementById('siPh').style.display='none';};
+  r.readAsDataURL(f);
 }
-
 function openSubmitModal(){
   if(!CU){openAuthOrProfile();showToast('এন্ট্রি যোগ করতে লগইন করুন','bad');return;}
   om('subMo');
 }
-
 async function submitEntry(){
-  const ct=document.getElementById('sCt').value;
-  const ti=document.getElementById('sTi').value.trim();
-  const er=document.getElementById('sErr');
-  er.style.display='none';
+  const ct=document.getElementById('sCt').value, ti=document.getElementById('sTi').value.trim();
+  const er=document.getElementById('sErr'); er.style.display='none';
   if(!ct||!ti){er.textContent='ক্যাটাগরি ও শিরোনাম আবশ্যক';er.style.display='block';return;}
   const b=document.getElementById('sBtn');b.disabled=true;b.textContent='জমা দেওয়া হচ্ছে...';
   try{
     let imageUrl='';
-    if(siFile){
-      const r=new FileReader();
-      imageUrl=await new Promise((res,rej)=>{r.onload=()=>res(r.result);r.onerror=rej;r.readAsDataURL(siFile);});
-    }
+    if(siFile){const r=new FileReader();imageUrl=await new Promise((res,rej)=>{r.onload=()=>res(r.result);r.onerror=rej;r.readAsDataURL(siFile);});}
     await db.collection('pending').add({
-      category:ct,title:ti,
-      thana:document.getElementById('sTh').value,
-      specialty:document.getElementById('sSp').value.trim(),
-      phone:document.getElementById('sPh').value.trim(),
-      address:document.getElementById('sAd').value.trim(),
-      timing:document.getElementById('sTm').value.trim(),
-      mapUrl:document.getElementById('sMp').value.trim(),
-      description:document.getElementById('sDc').value.trim(),
-      imageUrl,
-      submittedBy:CU.uid,   // stored for admin only, never shown publicly
-      status:'pending',
+      category:ct,title:ti,thana:document.getElementById('sTh').value,
+      specialty:document.getElementById('sSp').value.trim(),phone:document.getElementById('sPh').value.trim(),
+      address:document.getElementById('sAd').value.trim(),timing:document.getElementById('sTm').value.trim(),
+      mapUrl:document.getElementById('sMp').value.trim(),description:document.getElementById('sDc').value.trim(),
+      imageUrl,submittedBy:CU.uid,status:'pending',
       submittedAt:firebase.firestore.FieldValue.serverTimestamp(),
     });
-    cm('subMo');clearSub();
+    cm('subMo');
+    ['sCt','sTh','sTi','sSp','sPh','sAd','sTm','sMp','sDc'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('siPrev').style.display='none';document.getElementById('siPh').style.display='';siFile=null;
     showToast('জমা দেওয়া হয়েছে! অনুমোদনের অপেক্ষায় 📤','ok');
   }catch(e){er.textContent='সমস্যা: '+e.message;er.style.display='block';}
   b.disabled=false;b.textContent='📤 জমা দিন (অনুমোদনের জন্য)';
 }
 
-function clearSub(){
-  ['sCt','sTh','sTi','sSp','sPh','sAd','sTm','sMp','sDc'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('siPrev').style.display='none';
-  document.getElementById('siPh').style.display='';siFile=null;
-}
-
+// ── MY SUBMISSIONS ──
 async function viewMySubs(){
   cm('authMo');om('mySubMo');
   try{
-    const s=await db.collection('pending').where('submittedBy','==',CU.uid)
-      .orderBy('submittedAt','desc').get();
+    const s=await db.collection('pending').where('submittedBy','==',CU.uid).orderBy('submittedAt','desc').get();
     if(s.empty){document.getElementById('mySubList').innerHTML='<p style="color:var(--muted);text-align:center;font-size:.88rem;padding:1rem">কোনো জমা নেই</p>';return;}
     document.getElementById('mySubList').innerHTML=s.docs.map(d=>{
       const e=d.data();
@@ -430,14 +505,29 @@ async function viewMySubs(){
         <div style="font-size:.78rem;margin-top:.18rem">${st}</div>
       </div>`;
     }).join('');
-  }catch{document.getElementById('mySubList').innerHTML='<p style="color:var(--danger);font-size:.85rem">ডেটা লোড সমস্যা</p>';}
+  }catch(e){document.getElementById('mySubList').innerHTML='<p style="color:var(--danger);font-size:.85rem">সমস্যা: '+e.message+'</p>';}
 }
 
+// ── PWA ──
+let deferredPrompt=null;
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault();deferredPrompt=e;
+  document.getElementById('pwaBanner').classList.add('show');
+});
+function installPWA(){
+  if(!deferredPrompt) return;
+  deferredPrompt.prompt();
+  deferredPrompt.userChoice.then(()=>{deferredPrompt=null;document.getElementById('pwaBanner').classList.remove('show');});
+}
+if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
+
+// ── TOAST ──
 function showToast(msg,type=''){
-  const t=document.getElementById('toast');
-  t.textContent=msg;t.className='show '+(type||'');
+  const t=document.getElementById('toast');t.textContent=msg;t.className='show '+(type||'');
   setTimeout(()=>t.className='',2800);
 }
+
+loadCats(); loadTicker(); loadBanners();
 </script>
 </body>
 </html>

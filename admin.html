@@ -3,91 +3,103 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>অ্যাডমিন প্যানেল — সুনামগঞ্জ জিলা</title>
+<title>অ্যাডমিন — সুনামগঞ্জ জিলা</title>
 <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Noto+Serif+Bengali:wght@600;700&display=swap" rel="stylesheet"/>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <style>
-:root{--primary:#0d7c6e;--primary-dark:#085f54;--accent:#f5a623;--bg:#f0f4f8;--white:#fff;--text:#1a1a2e;--muted:#6b7280;--border:#e2e8f0;--danger:#ef4444;--success:#10b981;--radius:10px;}
+:root{--primary:#0d7c6e;--primary-dark:#085f54;--accent:#f5a623;--bg:#f0f4f8;--white:#fff;--text:#1a1a2e;--muted:#6b7280;--border:#e2e8f0;--danger:#ef4444;--success:#10b981;--warn:#f59e0b;--radius:10px;}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Hind Siliguri',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
-/* LOGIN */
-#loginScreen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1rem}
-.lc{background:var(--white);border-radius:16px;padding:2rem;width:100%;max-width:380px;box-shadow:0 8px 32px rgba(0,0,0,.1);text-align:center}
-.ll{font-family:'Noto Serif Bengali',serif;font-size:1.6rem;font-weight:700;color:var(--primary);margin-bottom:.3rem}
+#loginScreen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1rem;background:linear-gradient(135deg,var(--primary-dark),var(--primary))}
+.lc{background:var(--white);border-radius:16px;padding:2rem;width:100%;max-width:360px;box-shadow:0 12px 40px rgba(0,0,0,.2);text-align:center}
+.ll{font-family:'Noto Serif Bengali',serif;font-size:1.6rem;font-weight:700;color:var(--primary);margin-bottom:.2rem}
 .ls{font-size:.85rem;color:var(--muted);margin-bottom:1.5rem}
-.ff{margin-bottom:1rem;text-align:left}
-.ff label{display:block;font-size:.8rem;font-weight:600;color:var(--muted);margin-bottom:.3rem}
-.ff input,.ff select,.ff textarea{width:100%;padding:.65rem .9rem;border:1.5px solid var(--border);border-radius:var(--radius);font-family:'Hind Siliguri',sans-serif;font-size:.92rem;outline:none;transition:border-color .2s;background:var(--white);color:var(--text)}
+.ff{margin-bottom:.9rem;text-align:left}
+.ff label{display:block;font-size:.78rem;font-weight:600;color:var(--muted);margin-bottom:.28rem}
+.ff input,.ff select,.ff textarea{width:100%;padding:.62rem .9rem;border:1.5px solid var(--border);border-radius:var(--radius);font-family:'Hind Siliguri',sans-serif;font-size:.9rem;outline:none;transition:border-color .2s;color:var(--text)}
 .ff input:focus,.ff select:focus,.ff textarea:focus{border-color:var(--primary)}
-.ff textarea{resize:vertical;min-height:80px}
-.bf{width:100%;padding:.75rem;background:var(--primary);color:#fff;border:none;border-radius:var(--radius);font-family:'Hind Siliguri',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;transition:background .2s}
+.ff textarea{resize:vertical;min-height:78px}
+.bf{width:100%;padding:.72rem;background:var(--primary);color:#fff;border:none;border-radius:var(--radius);font-family:'Hind Siliguri',sans-serif;font-size:.97rem;font-weight:700;cursor:pointer;transition:background .2s}
 .bf:hover{background:var(--primary-dark)}
 .bf:disabled{opacity:.6;cursor:not-allowed}
-.em{color:var(--danger);font-size:.82rem;margin-top:.5rem;display:none}
-/* ADMIN */
+.em{color:var(--danger);font-size:.8rem;margin-top:.4rem;display:none}
 #adminScreen{display:none}
 .ah{background:var(--primary);color:#fff;padding:.8rem 1rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.15)}
 .al{font-family:'Noto Serif Bengali',serif;font-size:1.1rem;font-weight:700}
 .al small{font-size:.7rem;opacity:.7;display:block;font-family:'Hind Siliguri',sans-serif}
-.bsm{padding:.4rem .9rem;border-radius:6px;border:none;font-family:'Hind Siliguri',sans-serif;font-size:.8rem;font-weight:600;cursor:pointer;transition:all .2s}
+.bsm{padding:.38rem .85rem;border-radius:6px;border:none;font-family:'Hind Siliguri',sans-serif;font-size:.78rem;font-weight:600;cursor:pointer;transition:all .2s}
 .bw{background:rgba(255,255,255,.2);color:#fff}.bw:hover{background:rgba(255,255,255,.3)}
-.bd{background:var(--danger);color:#fff}
-.bs{background:var(--success);color:#fff}
-.ba{background:var(--accent);color:#fff}
-/* TABS */
+.bd2{background:var(--danger);color:#fff}
 .tabs{background:var(--white);border-bottom:1px solid var(--border);display:flex;overflow-x:auto}
 .tabs::-webkit-scrollbar{display:none}
-.tab{padding:.7rem 1rem;font-size:.82rem;font-weight:600;cursor:pointer;white-space:nowrap;border:none;background:none;font-family:'Hind Siliguri',sans-serif;color:var(--muted);border-bottom:3px solid transparent;transition:all .2s;position:relative}
+.tab{padding:.65rem .95rem;font-size:.8rem;font-weight:600;cursor:pointer;white-space:nowrap;border:none;background:none;font-family:'Hind Siliguri',sans-serif;color:var(--muted);border-bottom:3px solid transparent;transition:all .2s;position:relative}
 .tab.active{color:var(--primary);border-bottom-color:var(--primary)}
 .badge{position:absolute;top:6px;right:4px;background:var(--danger);color:#fff;font-size:.6rem;border-radius:50%;width:16px;height:16px;display:flex;align-items:center;justify-content:center;font-weight:700}
-/* CONTENT */
-.tc{display:none;padding:1rem;max-width:680px;margin:0 auto}
+.tc{display:none;padding:1rem;max-width:700px;margin:0 auto}
 .tc.active{display:block}
 .sc{background:var(--white);border-radius:var(--radius);padding:1.2rem;border:1px solid var(--border);margin-bottom:1rem;box-shadow:0 1px 4px rgba(0,0,0,.04)}
-.sc h3{font-family:'Noto Serif Bengali',serif;font-size:1rem;color:var(--primary);margin-bottom:1rem;padding-bottom:.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.4rem}
+.sc h3{font-family:'Noto Serif Bengali',serif;font-size:.98rem;color:var(--primary);margin-bottom:1rem;padding-bottom:.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.4rem}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:.7rem}
 @media(max-width:500px){.g2{grid-template-columns:1fr}}
+/* STATS */
+.sg{display:grid;grid-template-columns:repeat(2,1fr);gap:.7rem;margin-bottom:1rem}
+.sk{background:var(--white);border-radius:var(--radius);padding:1rem;border:1px solid var(--border);text-align:center;cursor:pointer;transition:all .2s}
+.sk:hover{border-color:var(--primary);transform:translateY(-2px)}
+.sn{font-size:1.8rem;font-weight:700;color:var(--primary);font-family:'Noto Serif Bengali',serif}
+.sl{font-size:.75rem;color:var(--muted);margin-top:.2rem}
+/* ANALYTICS CHART */
+.chart-bar-wrap{margin-top:.8rem}
+.chart-bar-row{display:flex;align-items:center;gap:.7rem;margin-bottom:.5rem}
+.chart-bar-label{font-size:.78rem;color:var(--text);width:100px;text-align:right;flex-shrink:0}
+.chart-bar-bg{flex:1;background:var(--bg);border-radius:50px;height:18px;overflow:hidden}
+.chart-bar-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--primary-dark));border-radius:50px;transition:width .8s ease;display:flex;align-items:center;justify-content:flex-end;padding-right:.4rem}
+.chart-bar-num{font-size:.68rem;color:#fff;font-weight:700}
 /* ENTRIES */
 .ae{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:.8rem 1rem;margin-bottom:.6rem;display:flex;align-items:center;gap:.8rem;box-shadow:0 1px 3px rgba(0,0,0,.04)}
 .ai{width:56px;height:56px;border-radius:8px;object-fit:cover;background:#e0f2f1;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.5rem;overflow:hidden}
 .ai img{width:100%;height:100%;object-fit:cover}
 .an{flex:1;min-width:0}
-.at2{font-weight:700;font-size:.9rem;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ac{font-size:.75rem;color:var(--primary);font-weight:600}
-.am{font-size:.72rem;color:var(--muted)}
-.aa{display:flex;gap:.4rem;flex-shrink:0}
-/* PENDING CARD */
+.at2{font-weight:700;font-size:.88rem;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ac{font-size:.73rem;color:var(--primary);font-weight:600}
+.am{font-size:.7rem;color:var(--muted)}
+.aa{display:flex;gap:.35rem;flex-shrink:0}
+/* PENDING */
 .pc{background:var(--white);border:2px solid #fef3c7;border-radius:var(--radius);padding:1rem;margin-bottom:.8rem;box-shadow:0 1px 4px rgba(0,0,0,.06)}
-.pc .pt{font-family:'Noto Serif Bengali',serif;font-weight:700;font-size:.95rem;color:var(--text);margin-bottom:.15rem}
-.pc .pm{font-size:.78rem;color:var(--primary);margin-bottom:.3rem}
-.pc .pd{font-size:.82rem;color:#374151;line-height:1.6;margin-bottom:.5rem}
-.pc-img{width:100%;height:130px;border-radius:8px;object-fit:cover;margin-bottom:.6rem;display:none}
+.pc .pt{font-family:'Noto Serif Bengali',serif;font-weight:700;font-size:.92rem;color:var(--text);margin-bottom:.12rem}
+.pc .pm{font-size:.76rem;color:var(--primary);margin-bottom:.3rem}
+.pc-img{width:100%;height:120px;border-radius:8px;object-fit:cover;margin-bottom:.6rem}
 .pc-actions{display:flex;gap:.5rem}
 .pc-approve{flex:1;padding:.5rem;background:var(--success);color:#fff;border:none;border-radius:8px;font-family:'Hind Siliguri',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer}
 .pc-reject{flex:1;padding:.5rem;background:var(--white);color:var(--danger);border:1.5px solid #fca5a5;border-radius:8px;font-family:'Hind Siliguri',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer}
+/* BANNER */
+.banner-admin-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:.8rem;margin-bottom:.6rem;display:flex;align-items:center;gap:.7rem}
+.banner-thumb{width:80px;height:50px;border-radius:6px;object-fit:cover;background:var(--primary);flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.7rem;overflow:hidden}
+.banner-thumb img{width:100%;height:100%;object-fit:cover}
+.toggle-switch{position:relative;display:inline-block;width:40px;height:22px}
+.toggle-switch input{opacity:0;width:0;height:0}
+.slider{position:absolute;cursor:pointer;inset:0;background:#ccc;border-radius:50px;transition:.3s}
+.slider:before{content:"";position:absolute;height:16px;width:16px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.3s}
+input:checked+.slider{background:var(--success)}
+input:checked+.slider:before{transform:translateX(18px)}
 /* SEARCH */
-.as{background:var(--white);border:1.5px solid var(--border);border-radius:50px;padding:.5rem 1rem;width:100%;font-family:'Hind Siliguri',sans-serif;font-size:.9rem;outline:none;margin-bottom:.8rem;display:block}
+.as{background:var(--white);border:1.5px solid var(--border);border-radius:50px;padding:.5rem 1rem;width:100%;font-family:'Hind Siliguri',sans-serif;font-size:.88rem;outline:none;margin-bottom:.8rem;display:block}
 .as:focus{border-color:var(--primary)}
-/* STATS */
-.sg{display:grid;grid-template-columns:repeat(2,1fr);gap:.7rem;margin-bottom:1rem}
-.sk{background:var(--white);border-radius:var(--radius);padding:1rem;border:1px solid var(--border);text-align:center}
-.sn{font-size:1.8rem;font-weight:700;color:var(--primary);font-family:'Noto Serif Bengali',serif}
-.sl{font-size:.75rem;color:var(--muted);margin-top:.2rem}
 /* IMG UPLOAD */
-.iup{width:100%;height:150px;border:2px dashed var(--border);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;position:relative;background:#fafafa;transition:border-color .2s}
+.iup{width:100%;height:140px;border:2px dashed var(--border);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;position:relative;background:#fafafa;transition:border-color .2s}
 .iup:hover{border-color:var(--primary)}
 .iup img{width:100%;height:100%;object-fit:cover;display:none}
-.iph{text-align:center;color:var(--muted);font-size:.85rem}
-.iph span{display:block;font-size:2rem;margin-bottom:.3rem}
-/* TOAST */
+.iph{text-align:center;color:var(--muted);font-size:.82rem}
+.iph span{display:block;font-size:2rem;margin-bottom:.25rem}
+/* EXPIRED badge */
+.expired-badge{background:#fef2f2;color:var(--danger);font-size:.68rem;padding:.1rem .4rem;border-radius:4px;font-weight:700}
 #toast{position:fixed;top:70px;left:50%;transform:translateX(-50%);padding:.6rem 1.4rem;border-radius:50px;font-size:.85rem;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999;white-space:nowrap}
 #toast.show{opacity:1}
 #toast.success{background:#10b981;color:#fff}
 #toast.error{background:#ef4444;color:#fff}
-.no-pending{text-align:center;padding:2rem;color:var(--muted);font-size:.9rem}
-.no-pending .big{font-size:2.5rem;margin-bottom:.5rem}
+.no-items{text-align:center;padding:2rem;color:var(--muted);font-size:.9rem}
+.no-items .big{font-size:2.5rem;margin-bottom:.5rem}
 </style>
 </head>
 <body>
@@ -98,7 +110,7 @@ body{font-family:'Hind Siliguri',sans-serif;background:var(--bg);color:var(--tex
   <div class="ll">⚙️ অ্যাডমিন</div>
   <div class="ls">সুনামগঞ্জ জিলা ডিরেক্টরি</div>
   <div class="ff"><label>পাসওয়ার্ড</label>
-   <input type="password" id="passInput" placeholder="পাসওয়ার্ড লিখুন" onkeydown="if(event.key==='Enter')doLogin()"/>
+   <input type="password" id="passInput" placeholder="পাসওয়ার্ড" onkeydown="if(event.key==='Enter')doLogin()"/>
   </div>
   <button class="bf" onclick="doLogin()">লগইন করুন</button>
   <div class="em" id="loginError">❌ পাসওয়ার্ড ভুল হয়েছে</div>
@@ -109,49 +121,77 @@ body{font-family:'Hind Siliguri',sans-serif;background:var(--bg);color:var(--tex
 <div id="adminScreen">
  <div class="ah">
   <div class="al">সুনামগঞ্জ জিলা<small>অ্যাডমিন প্যানেল</small></div>
-  <div style="display:flex;gap:.5rem">
-   <a href="index.html" class="bsm bw">🏠 সাইট</a>
+  <div style="display:flex;gap:.4rem;align-items:center">
+   <a href="index.html" class="bsm bw">🏠</a>
    <button class="bsm bw" onclick="doLogout()">বের হন</button>
   </div>
  </div>
 
- <div class="tabs">
+ <div class="tabs" id="tabBar">
   <button class="tab active" onclick="swTab('dashboard',this)">📊 ড্যাশবোর্ড</button>
-  <button class="tab" onclick="swTab('pending',this)" id="pendingTab">⏳ অনুমোদন<span class="badge" id="pendingBadge" style="display:none">0</span></button>
+  <button class="tab" onclick="swTab('pending',this)" id="pendingTabBtn">⏳ অনুমোদন<span class="badge" id="pendingBadge" style="display:none">0</span></button>
+  <button class="tab" onclick="swTab('banners',this)">🖼️ ব্যানার</button>
   <button class="tab" onclick="swTab('add',this)">➕ এন্ট্রি যোগ</button>
   <button class="tab" onclick="swTab('entries',this)">📋 সব এন্ট্রি</button>
   <button class="tab" onclick="swTab('users',this)">👥 ব্যবহারকারী</button>
+  <button class="tab" onclick="swTab('analytics',this)">📈 এনালিটিক্স</button>
   <button class="tab" onclick="swTab('settings',this)">⚙️ সেটিংস</button>
  </div>
 
  <!-- DASHBOARD -->
  <div class="tc active" id="tab-dashboard">
   <div class="sg">
-   <div class="sk"><div class="sn" id="totalCount">—</div><div class="sl">মোট এন্ট্রি</div></div>
-   <div class="sk"><div class="sn" id="pendingCount" style="color:#f59e0b">—</div><div class="sl">অনুমোদন বাকি</div></div>
-   <div class="sk"><div class="sn" id="userCount">—</div><div class="sl">নিবন্ধিত ব্যবহারকারী</div></div>
-   <div class="sk"><div class="sn" id="catCount">—</div><div class="sl">ক্যাটাগরি</div></div>
+   <div class="sk" onclick="swTab('entries',document.querySelector('.tab:nth-child(5)'))"><div class="sn" id="totalCount">—</div><div class="sl">মোট এন্ট্রি</div></div>
+   <div class="sk" onclick="swTab('pending',document.querySelector('.tab:nth-child(2)'))"><div class="sn" id="pendingCount" style="color:var(--warn)">—</div><div class="sl">অনুমোদন বাকি</div></div>
+   <div class="sk" onclick="swTab('users',document.querySelector('.tab:nth-child(6)'))"><div class="sn" id="userCount">—</div><div class="sl">ব্যবহারকারী</div></div>
+   <div class="sk"><div class="sn" id="reviewCount">—</div><div class="sl">মোট রিভিউ</div></div>
   </div>
-  <div class="sc">
-   <h3>🕐 সাম্প্রতিক এন্ট্রি</h3>
-   <div id="recentEntries"><p style="color:var(--muted);font-size:.85rem">লোড হচ্ছে...</p></div>
-  </div>
+  <div class="sc"><h3>🕐 সাম্প্রতিক এন্ট্রি</h3><div id="recentEntries"><p style="color:var(--muted);font-size:.85rem">লোড হচ্ছে...</p></div></div>
   <div class="sc">
    <h3>🔗 দ্রুত কাজ</h3>
    <div style="display:flex;flex-wrap:wrap;gap:.5rem">
-    <a href="index.html" class="bsm bs">🏠 হোমপেজ</a>
-    <button class="bsm ba" onclick="swTab('pending',document.querySelector('.tab:nth-child(2)'))">⏳ পেন্ডিং দেখুন</button>
-    <button class="bsm" style="background:var(--primary);color:#fff" onclick="swTab('add',document.querySelector('.tab:nth-child(3)'))">➕ নতুন এন্ট্রি</button>
+    <a href="index.html" class="bsm" style="background:var(--success);color:#fff">🏠 হোমপেজ</a>
+    <button class="bsm" style="background:var(--warn);color:#fff" onclick="swTab('pending',document.querySelector('.tab:nth-child(2)'))">⏳ পেন্ডিং</button>
+    <button class="bsm" style="background:var(--primary);color:#fff" onclick="swTab('add',document.querySelector('.tab:nth-child(4)'))">➕ নতুন এন্ট্রি</button>
+    <button class="bsm" style="background:#8b5cf6;color:#fff" onclick="exportJSON()">💾 ব্যাকআপ</button>
    </div>
   </div>
  </div>
 
- <!-- PENDING APPROVALS -->
+ <!-- PENDING -->
  <div class="tc" id="tab-pending">
-  <div class="sc" style="background:#fef3c7;border-color:#f59e0b">
-   <p style="font-size:.85rem;color:#92400e">⚠️ নিচের তথ্যগুলো ব্যবহারকারীরা জমা দিয়েছেন। যাচাই করে অনুমোদন দিন বা বাতিল করুন।</p>
+  <div class="sc" style="background:#fef3c7;border-color:var(--warn)">
+   <p style="font-size:.84rem;color:#92400e">⚠️ নিচের তথ্যগুলো ব্যবহারকারীরা জমা দিয়েছেন। যাচাই করে অনুমোদন দিন বা বাতিল করুন।</p>
   </div>
   <div id="pendingList"><p style="color:var(--muted);font-size:.85rem;text-align:center;padding:2rem">লোড হচ্ছে...</p></div>
+ </div>
+
+ <!-- BANNERS -->
+ <div class="tc" id="tab-banners">
+  <div class="sc">
+   <h3>🖼️ নতুন ব্যানার যোগ করুন</h3>
+   <div class="ff">
+    <label>ব্যানার ছবি</label>
+    <div class="iup" onclick="document.getElementById('bannerFile').click()">
+     <img id="bannerPreview" alt=""/>
+     <div class="iph" id="bannerPh"><span>🖼️</span>ব্যানার ছবি বেছে নিন</div>
+    </div>
+    <input type="file" id="bannerFile" accept="image/*" style="display:none" onchange="prevBanner(event)"/>
+   </div>
+   <div class="g2">
+    <div class="ff"><label>শিরোনাম (ঐচ্ছিক)</label><input type="text" id="bTitle" placeholder="বিজ্ঞাপনের নাম"/></div>
+    <div class="ff"><label>ক্লিক লিংক (ঐচ্ছিক)</label><input type="url" id="bLink" placeholder="https://..."/></div>
+   </div>
+   <div class="g2">
+    <div class="ff"><label>মেয়াদ শেষ (ঐচ্ছিক)</label><input type="date" id="bExpiry"/></div>
+    <div class="ff"><label>ক্রম (১ = প্রথমে)</label><input type="number" id="bOrder" value="1" min="1"/></div>
+   </div>
+   <button class="bf" id="bSaveBtn" onclick="saveBanner()">✅ ব্যানার সংরক্ষণ করুন</button>
+  </div>
+  <div class="sc">
+   <h3>📋 বিদ্যমান ব্যানার</h3>
+   <div id="bannerList"><p style="color:var(--muted);font-size:.85rem">লোড হচ্ছে...</p></div>
+  </div>
  </div>
 
  <!-- ADD ENTRY -->
@@ -161,15 +201,14 @@ body{font-family:'Hind Siliguri',sans-serif;background:var(--bg);color:var(--tex
    <div class="ff">
     <label>ছবি আপলোড (ঐচ্ছিক)</label>
     <div class="iup" onclick="document.getElementById('imgFile').click()">
-     <img id="imgPreviewEl" alt="preview"/>
+     <img id="imgPreviewEl" alt=""/>
      <div class="iph" id="imgPlaceholder"><span>📷</span>ছবি বেছে নিন</div>
     </div>
     <input type="file" id="imgFile" accept="image/*" style="display:none" onchange="previewImg(event)"/>
    </div>
    <div class="g2">
     <div class="ff"><label>ক্যাটাগরি *</label>
-     <select id="fCat">
-      <option value="">বেছে নিন</option>
+     <select id="fCat"><option value="">বেছে নিন</option>
       <option value="doctor">ডাক্তার</option><option value="hospital">হাসপাতাল</option>
       <option value="diagnostic">ডায়াগনস্টিক</option><option value="blood">রক্তদান</option>
       <option value="transport">গাড়ি ভাড়া</option><option value="emergency">জরুরী নাম্বার</option>
@@ -188,9 +227,8 @@ body{font-family:'Hind Siliguri',sans-serif;background:var(--bg);color:var(--tex
       <option value="rep">জনপ্রতিনিধি</option>
      </select>
     </div>
-    <div class="ff"><label>উপজেলা/থানা</label>
-     <select id="fThana">
-      <option value="">বেছে নিন</option>
+    <div class="ff"><label>উপজেলা</label>
+     <select id="fThana"><option value="">বেছে নিন</option>
       <option>সুনামগঞ্জ সদর</option><option>ছাতক</option><option>জগন্নাথপুর</option>
       <option>দিরাই</option><option>ধর্মপাশা</option><option>দোয়ারাবাজার</option>
       <option>তাহিরপুর</option><option>বিশ্বম্ভরপুর</option><option>শাল্লা</option>
@@ -205,8 +243,11 @@ body{font-family:'Hind Siliguri',sans-serif;background:var(--bg);color:var(--tex
    </div>
    <div class="ff"><label>বর্তমান কর্মস্থল</label><input type="text" id="fWorkplace" placeholder="সুনামগঞ্জ সদর হাসপাতাল"/></div>
    <div class="ff"><label>ঠিকানা</label><input type="text" id="fAddress" placeholder="পূর্ণ ঠিকানা"/></div>
-   <div class="ff"><label>চেম্বার / সময়সূচি</label><textarea id="fChambers" placeholder="চেম্বারের নাম ও সময়সূচি লিখুন"></textarea></div>
-   <div class="ff"><label>সময়সূচি</label><input type="text" id="fTiming" placeholder="সকাল ৯টা - বিকাল ৫টা"/></div>
+   <div class="ff"><label>চেম্বার / সময়সূচি</label><textarea id="fChambers" placeholder="চেম্বারের নাম ও সময়সূচি"></textarea></div>
+   <div class="g2">
+    <div class="ff"><label>সময়সূচি</label><input type="text" id="fTiming" placeholder="সকাল ৯টা - বিকাল ৫টা"/></div>
+    <div class="ff"><label>মেয়াদ শেষ (ঐচ্ছিক)</label><input type="date" id="fExpiry"/></div>
+   </div>
    <div class="g2">
     <div class="ff"><label>ফোন নাম্বার</label><input type="tel" id="fPhone" placeholder="01XXXXXXXXX"/></div>
     <div class="ff"><label>গুগল ম্যাপ লিংক</label><input type="url" id="fMap" placeholder="https://maps.google.com/..."/></div>
@@ -217,20 +258,28 @@ body{font-family:'Hind Siliguri',sans-serif;background:var(--bg);color:var(--tex
     <button class="bf" style="background:#f3f4f6;color:var(--text)" onclick="clearForm()">🗑️ মুছুন</button>
    </div>
    <input type="hidden" id="editId"/>
+   <!-- CSV IMPORT -->
+   <div style="margin-top:1.2rem;padding-top:1rem;border-top:1px solid var(--border)">
+    <div style="font-size:.82rem;font-weight:700;color:var(--muted);margin-bottom:.5rem">📥 CSV থেকে একসাথে ইমপোর্ট করুন</div>
+    <p style="font-size:.75rem;color:var(--muted);margin-bottom:.5rem">CSV ফরম্যাট: category,title,thana,specialty,phone,address,timing,description</p>
+    <input type="file" id="csvFile" accept=".csv" style="display:none" onchange="importCSV(event)"/>
+    <button class="bf" style="background:#8b5cf6" onclick="document.getElementById('csvFile').click()">📥 CSV ফাইল আপলোড</button>
+   </div>
   </div>
  </div>
 
- <!-- ALL ENTRIES -->
+ <!-- ENTRIES -->
  <div class="tc" id="tab-entries">
-  <input class="as" id="adminSearch" type="text" placeholder="🔍 এন্ট্রি খুঁজুন..."/>
-  <div style="margin-bottom:.7rem;display:flex;gap:.5rem;flex-wrap:wrap">
-   <select id="catFilter" onchange="loadAdminEntries()" style="padding:.4rem .8rem;border:1.5px solid var(--border);border-radius:6px;font-family:'Hind Siliguri',sans-serif;font-size:.82rem;outline:none">
+  <div style="display:flex;gap:.5rem;margin-bottom:.7rem;flex-wrap:wrap;align-items:center">
+   <input class="as" id="adminSearch" type="text" placeholder="🔍 এন্ট্রি খুঁজুন..." style="flex:1;margin-bottom:0"/>
+   <select id="catFilter" onchange="loadAdminEntries()" style="padding:.45rem .8rem;border:1.5px solid var(--border);border-radius:6px;font-family:'Hind Siliguri',sans-serif;font-size:.82rem;outline:none">
     <option value="">সব ক্যাটাগরি</option>
     <option value="doctor">ডাক্তার</option><option value="hospital">হাসপাতাল</option>
     <option value="diagnostic">ডায়াগনস্টিক</option><option value="tourist">দর্শনীয় স্থান</option>
     <option value="hotel">হোটেল</option><option value="restaurant">রেস্তুরেন্ট</option>
-    <option value="education">শিক্ষা প্রতিষ্ঠান</option><option value="job">চাকরি</option>
+    <option value="education">শিক্ষা</option><option value="job">চাকরি</option>
    </select>
+   <button class="bsm" style="background:#059669;color:#fff;white-space:nowrap" onclick="exportJSON()">💾 ব্যাকআপ</button>
   </div>
   <div id="adminEntriesList"><p style="color:var(--muted);font-size:.85rem">লোড হচ্ছে...</p></div>
  </div>
@@ -239,8 +288,24 @@ body{font-family:'Hind Siliguri',sans-serif;background:var(--bg);color:var(--tex
  <div class="tc" id="tab-users">
   <div class="sc">
    <h3>👥 নিবন্ধিত ব্যবহারকারী</h3>
-   <input class="as" id="userSearch" type="text" placeholder="🔍 ব্যবহারকারী খুঁজুন..." style="margin-bottom:.8rem"/>
+   <input class="as" id="userSearch" type="text" placeholder="🔍 ব্যবহারকারী খুঁজুন..."/>
    <div id="userList"><p style="color:var(--muted);font-size:.85rem">লোড হচ্ছে...</p></div>
+  </div>
+ </div>
+
+ <!-- ANALYTICS -->
+ <div class="tc" id="tab-analytics">
+  <div class="sc">
+   <h3>📈 ক্যাটাগরি অনুযায়ী এন্ট্রি</h3>
+   <div class="chart-bar-wrap" id="catChart"><p style="color:var(--muted);font-size:.85rem">লোড হচ্ছে...</p></div>
+  </div>
+  <div class="sc">
+   <h3>⭐ সেরা রেটিং প্রাপ্ত এন্ট্রি</h3>
+   <div id="topRated"><p style="color:var(--muted);font-size:.85rem">লোড হচ্ছে...</p></div>
+  </div>
+  <div class="sc">
+   <h3>🗺️ উপজেলা অনুযায়ী এন্ট্রি</h3>
+   <div class="chart-bar-wrap" id="thanaChart"><p style="color:var(--muted);font-size:.85rem">লোড হচ্ছে...</p></div>
   </div>
  </div>
 
@@ -249,30 +314,22 @@ body{font-family:'Hind Siliguri',sans-serif;background:var(--bg);color:var(--tex
   <div class="sc">
    <h3>⚙️ সাইট সেটিংস</h3>
    <div class="ff"><label>টিকার/নোটিশ টেক্সট</label><input type="text" id="sTicker" placeholder="নোটিশ বার এর টেক্সট"/></div>
+   <div class="ff"><label>অ্যাডমিন নোটিফিকেশন ইমেইল</label><input type="email" id="sEmail" placeholder="admin@email.com"/></div>
    <button class="bf" onclick="saveSettings()">সেটিংস সংরক্ষণ করুন</button>
   </div>
   <div class="sc">
    <h3>🔑 পাসওয়ার্ড পরিবর্তন</h3>
-   <div class="ff"><label>বর্তমান পাসওয়ার্ড</label><input type="password" id="oldPass" placeholder="বর্তমান পাসওয়ার্ড"/></div>
-   <div class="ff"><label>নতুন পাসওয়ার্ড</label><input type="password" id="newPass" placeholder="নতুন পাসওয়ার্ড"/></div>
+   <div class="ff"><label>বর্তমান পাসওয়ার্ড</label><input type="password" id="oldPass"/></div>
+   <div class="ff"><label>নতুন পাসওয়ার্ড</label><input type="password" id="newPass"/></div>
    <button class="bf" onclick="changePass()">পাসওয়ার্ড পরিবর্তন করুন</button>
   </div>
   <div class="sc">
-   <h3>🔥 Firebase — Auth চালু করার নির্দেশ</h3>
-   <p style="font-size:.84rem;line-height:1.8;color:var(--muted)">
-    ১. Firebase Console → Authentication → Get started<br>
-    ২. "Email/Password" সাইন-ইন পদ্ধতি চালু করুন<br>
-    ৩. Firestore Rules আপডেট করুন:<br>
-    <code style="background:#f3f4f6;padding:.2rem .4rem;border-radius:4px;font-size:.78rem;display:block;margin:.4rem 0">
-    match /pending/{id} { allow read: if request.auth != null; allow write: if request.auth != null; }<br>
-    match /entries/{id} { allow read: if true; allow write: if true; }<br>
-    match /users/{id} { allow read, write: if request.auth.uid == id; }
-    </code>
-   </p>
+   <h3>🗑️ মেয়াদোত্তীর্ণ এন্ট্রি পরিষ্কার</h3>
+   <p style="font-size:.84rem;color:var(--muted);margin-bottom:.7rem">মেয়াদ শেষ হয়ে যাওয়া সব এন্ট্রি একসাথে মুছে ফেলুন।</p>
+   <button class="bf" style="background:var(--danger)" onclick="deleteExpired()">🗑️ মেয়াদোত্তীর্ণ এন্ট্রি মুছুন</button>
   </div>
  </div>
 </div>
-
 <div id="toast"></div>
 
 <script>
@@ -287,10 +344,10 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 const db=firebase.firestore(), auth=firebase.auth();
-
 const PASS_KEY='szila_admin_pass';
 let adminPass=localStorage.getItem(PASS_KEY)||'admin123';
 
+// LOGIN / LOGOUT
 function doLogin(){
   const v=document.getElementById('passInput').value;
   if(v===adminPass){
@@ -311,14 +368,14 @@ function changePass(){
   showToast('পাসওয়ার্ড পরিবর্তন হয়েছে ✅','success');
   document.getElementById('oldPass').value='';document.getElementById('newPass').value='';
 }
-
 if(sessionStorage.getItem('szila_auth')==='1'){
   document.getElementById('loginScreen').style.display='none';
   document.getElementById('adminScreen').style.display='block';
-  setTimeout(initAdmin,100);
+  setTimeout(initAdmin,80);
 }
-
-function initAdmin(){loadDashboard();loadPending();loadAdminEntries();loadUsers();loadSettings();}
+function initAdmin(){
+  loadDashboard(); loadPending(); loadAdminEntries(); loadUsers(); loadSettings(); loadBanners(); loadAnalytics();
+}
 
 // TABS
 function swTab(name,el){
@@ -326,10 +383,8 @@ function swTab(name,el){
   document.querySelectorAll('.tc').forEach(t=>t.classList.remove('active'));
   if(el) el.classList.add('active');
   document.getElementById('tab-'+name).classList.add('active');
-  if(name==='entries') loadAdminEntries();
-  if(name==='pending') loadPending();
-  if(name==='users') loadUsers();
-  if(name==='dashboard') loadDashboard();
+  const loaders={entries:loadAdminEntries,pending:loadPending,users:loadUsers,dashboard:loadDashboard,banners:loadBanners,analytics:loadAnalytics};
+  if(loaders[name]) loaders[name]();
 }
 
 // DASHBOARD
@@ -340,137 +395,179 @@ async function loadDashboard(){
       db.collection('pending').where('status','==','pending').get(),
       db.collection('users').get()
     ]);
-    const cats=new Set(es.docs.map(d=>d.data().category));
     document.getElementById('totalCount').textContent=es.size;
     document.getElementById('pendingCount').textContent=ps.size;
     document.getElementById('userCount').textContent=us.size;
-    document.getElementById('catCount').textContent=cats.size;
-    if(ps.size>0){
-      document.getElementById('pendingBadge').textContent=ps.size;
-      document.getElementById('pendingBadge').style.display='flex';
-    }
+    if(ps.size>0){document.getElementById('pendingBadge').textContent=ps.size;document.getElementById('pendingBadge').style.display='flex';}
+    else document.getElementById('pendingBadge').style.display='none';
+    // count total reviews
+    let rv=0;
+    es.docs.forEach(d=>{if(d.data().reviewCount) rv+=d.data().reviewCount;});
+    document.getElementById('reviewCount').textContent=rv;
     const recent=es.docs.slice(-5).reverse().map(d=>d.data());
     document.getElementById('recentEntries').innerHTML=recent.length
-      ?recent.map(e=>`<div style="padding:.5rem 0;border-bottom:1px solid var(--border);font-size:.85rem">
+      ?recent.map(e=>`<div style="padding:.45rem 0;border-bottom:1px solid var(--border);font-size:.84rem;display:flex;justify-content:space-between">
           <span style="color:var(--primary);font-weight:600">${e.title}</span>
-          <span style="color:var(--muted);margin-left:.5rem;font-size:.75rem">${e.category||''}</span>
-        </div>`).join('')
+          <span style="color:var(--muted);font-size:.73rem">${e.category||''}</span></div>`).join('')
       :'<p style="color:var(--muted);font-size:.85rem">কোনো এন্ট্রি নেই</p>';
-  }catch(e){}
+  }catch(e){console.error(e);}
 }
 
-// ══ PENDING APPROVALS ══
+// PENDING
 async function loadPending(){
   document.getElementById('pendingList').innerHTML='<p style="color:var(--muted);font-size:.85rem;text-align:center;padding:1rem">লোড হচ্ছে...</p>';
   try{
     const snap=await db.collection('pending').where('status','==','pending').orderBy('submittedAt','desc').get();
     if(snap.empty){
-      document.getElementById('pendingList').innerHTML='<div class="no-pending"><div class="big">✅</div><p>কোনো অনুমোদন বাকি নেই</p></div>';
-      document.getElementById('pendingBadge').style.display='none';
-      return;
+      document.getElementById('pendingList').innerHTML='<div class="no-items"><div class="big">✅</div><p>কোনো অনুমোদন বাকি নেই</p></div>';
+      document.getElementById('pendingBadge').style.display='none';return;
     }
     document.getElementById('pendingBadge').textContent=snap.size;
     document.getElementById('pendingBadge').style.display='flex';
     document.getElementById('pendingList').innerHTML=snap.docs.map(d=>{
       const e=d.data(),id=d.id;
       return `<div class="pc" id="pc_${id}">
-        ${e.imageUrl?`<img class="pc-img" src="${e.imageUrl}" style="display:block" alt=""/>`:''}
-        <div class="pc"><div class="pt">${e.title||'—'}</div>
+        ${e.imageUrl&&e.imageUrl.length>100?`<img class="pc-img" src="${e.imageUrl}" alt=""/>`:''}
+        <div class="pt">${e.title||'—'}</div>
         <div class="pm">${e.category||''} ${e.thana?'· '+e.thana:''}</div>
-        ${e.specialty?`<div style="font-size:.8rem;color:var(--primary);margin-bottom:.2rem">বিশেষজ্ঞ: ${e.specialty}</div>`:''}
-        ${e.phone?`<div style="font-size:.8rem;color:var(--muted);margin-bottom:.2rem">📞 ${e.phone}</div>`:''}
-        ${e.address?`<div style="font-size:.8rem;color:var(--muted);margin-bottom:.3rem">📍 ${e.address}</div>`:''}
-        ${e.description?`<div class="pd">${e.description.substring(0,150)}${e.description.length>150?'...':''}</div>`:''}
+        ${e.specialty?`<div style="font-size:.78rem;color:var(--primary);margin-bottom:.15rem">বিশেষজ্ঞ: ${e.specialty}</div>`:''}
+        ${e.phone?`<div style="font-size:.78rem;color:var(--muted);margin-bottom:.15rem">📞 ${e.phone}</div>`:''}
+        ${e.address?`<div style="font-size:.78rem;color:var(--muted);margin-bottom:.3rem">📍 ${e.address}</div>`:''}
+        ${e.description?`<div style="font-size:.82rem;color:#374151;line-height:1.6;margin-bottom:.5rem">${e.description.substring(0,200)}</div>`:''}
         <div class="pc-actions">
           <button class="pc-approve" onclick="approveEntry('${id}')">✅ অনুমোদন দিন</button>
           <button class="pc-reject" onclick="rejectEntry('${id}')">❌ বাতিল করুন</button>
-        </div></div>
+        </div>
       </div>`;
     }).join('');
   }catch(e){
-    document.getElementById('pendingList').innerHTML='<p style="color:var(--danger);font-size:.85rem;text-align:center">ডেটা লোড সমস্যা: '+e.message+'</p>';
+    document.getElementById('pendingList').innerHTML=`<p style="color:var(--danger);font-size:.85rem;text-align:center;padding:1rem">সমস্যা: ${e.message}</p>`;
   }
 }
 
 async function approveEntry(id){
   try{
     const doc=await db.collection('pending').doc(id).get();
-    const data=doc.data();
-    // copy to entries collection (remove internal fields)
-    const entry={...data};
-    delete entry.submittedBy; // never copy submittedBy to public entries
-    delete entry.status;
-    delete entry.submittedAt;
-    entry.createdAt=firebase.firestore.FieldValue.serverTimestamp();
-    await db.collection('entries').add(entry);
-    // mark as approved
+    const data={...doc.data()};
+    delete data.submittedBy; delete data.status; delete data.submittedAt;
+    data.createdAt=firebase.firestore.FieldValue.serverTimestamp();
+    await db.collection('entries').add(data);
     await db.collection('pending').doc(id).update({status:'approved'});
-    document.getElementById('pc_'+id).remove();
+    document.getElementById('pc_'+id)?.remove();
     showToast('অনুমোদন দেওয়া হয়েছে ✅','success');
     loadDashboard();
   }catch(e){showToast('সমস্যা: '+e.message,'error');}
 }
-
 async function rejectEntry(id){
   if(!confirm('এই এন্ট্রিটি বাতিল করবেন?')) return;
   try{
     await db.collection('pending').doc(id).update({status:'rejected'});
-    document.getElementById('pc_'+id).remove();
+    document.getElementById('pc_'+id)?.remove();
     showToast('বাতিল করা হয়েছে','success');
     loadDashboard();
   }catch(e){showToast('সমস্যা: '+e.message,'error');}
 }
 
-// ADMIN ADD ENTRY
+// BANNERS
+let bannerFile=null;
+function prevBanner(e){
+  const f=e.target.files[0];if(!f)return;bannerFile=f;
+  const r=new FileReader();
+  r.onload=ev=>{const i=document.getElementById('bannerPreview');i.src=ev.target.result;i.style.display='block';document.getElementById('bannerPh').style.display='none';};
+  r.readAsDataURL(f);
+}
+async function saveBanner(){
+  const b=document.getElementById('bSaveBtn');b.disabled=true;b.textContent='সংরক্ষণ হচ্ছে...';
+  try{
+    let imageUrl='';
+    if(bannerFile){const r=new FileReader();imageUrl=await new Promise((res,rej)=>{r.onload=()=>res(r.result);r.onerror=rej;r.readAsDataURL(bannerFile);});}
+    const expiry=document.getElementById('bExpiry').value;
+    await db.collection('banners').add({
+      title:document.getElementById('bTitle').value.trim(),
+      linkUrl:document.getElementById('bLink').value.trim(),
+      order:parseInt(document.getElementById('bOrder').value)||1,
+      imageUrl, active:true,
+      expiresAt:expiry?new Date(expiry):null,
+      createdAt:firebase.firestore.FieldValue.serverTimestamp(),
+    });
+    document.getElementById('bTitle').value='';document.getElementById('bLink').value='';
+    document.getElementById('bExpiry').value='';document.getElementById('bOrder').value='1';
+    document.getElementById('bannerPreview').style.display='none';document.getElementById('bannerPh').style.display='';bannerFile=null;
+    showToast('ব্যানার যোগ হয়েছে ✅','success');loadBanners();
+  }catch(e){showToast('সমস্যা: '+e.message,'error');}
+  b.disabled=false;b.textContent='✅ ব্যানার সংরক্ষণ করুন';
+}
+async function loadBanners(){
+  try{
+    const snap=await db.collection('banners').orderBy('order').get();
+    if(snap.empty){document.getElementById('bannerList').innerHTML='<p style="color:var(--muted);font-size:.85rem">কোনো ব্যানার নেই</p>';return;}
+    const now=new Date();
+    document.getElementById('bannerList').innerHTML=snap.docs.map(d=>{
+      const b=d.data(),id=d.id;
+      const expired=b.expiresAt&&b.expiresAt.toDate&&b.expiresAt.toDate()<now;
+      return `<div class="banner-admin-card">
+        <div class="banner-thumb">${b.imageUrl&&b.imageUrl.length>100?`<img src="${b.imageUrl}" alt=""/>`:'🖼️'}</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-weight:700;font-size:.85rem">${b.title||'ব্যানার'}</div>
+          <div style="font-size:.73rem;color:var(--muted)">${b.linkUrl||'কোনো লিংক নেই'}</div>
+          ${expired?'<span class="expired-badge">মেয়াদ শেষ</span>':''}
+        </div>
+        <label class="toggle-switch" title="চালু/বন্ধ">
+          <input type="checkbox" ${b.active?'checked':''} onchange="toggleBanner('${id}',this.checked)"/>
+          <span class="slider"></span>
+        </label>
+        <button class="bsm bd2" onclick="deleteBanner('${id}')">🗑️</button>
+      </div>`;
+    }).join('');
+  }catch(e){document.getElementById('bannerList').innerHTML='<p style="color:var(--danger)">লোড সমস্যা</p>';}
+}
+async function toggleBanner(id,active){
+  try{await db.collection('banners').doc(id).update({active});showToast(active?'ব্যানার চালু':'ব্যানার বন্ধ','success');}
+  catch(e){showToast('সমস্যা','error');}
+}
+async function deleteBanner(id){
+  if(!confirm('এই ব্যানারটি মুছে ফেলবেন?')) return;
+  try{await db.collection('banners').doc(id).delete();showToast('মুছে ফেলা হয়েছে','success');loadBanners();}
+  catch(e){showToast('সমস্যা','error');}
+}
+
+// ADD/EDIT ENTRY
 let selectedFile=null;
 function previewImg(e){
   const f=e.target.files[0];if(!f)return;selectedFile=f;
   const r=new FileReader();
-  r.onload=ev=>{
-    document.getElementById('imgPreviewEl').src=ev.target.result;
-    document.getElementById('imgPreviewEl').style.display='block';
-    document.getElementById('imgPlaceholder').style.display='none';
-  };r.readAsDataURL(f);
+  r.onload=ev=>{document.getElementById('imgPreviewEl').src=ev.target.result;document.getElementById('imgPreviewEl').style.display='block';document.getElementById('imgPlaceholder').style.display='none';};
+  r.readAsDataURL(f);
 }
-
 async function saveEntry(){
   const cat=document.getElementById('fCat').value, title=document.getElementById('fTitle').value.trim();
   if(!cat||!title){showToast('ক্যাটাগরি ও শিরোনাম আবশ্যক','error');return;}
-  const b=document.getElementById('saveBtn');b.disabled=true;b.textContent='সংরক্ষণ করা হচ্ছে...';
+  const b=document.getElementById('saveBtn');b.disabled=true;b.textContent='সংরক্ষণ হচ্ছে...';
   try{
     let imageUrl='';
-    if(selectedFile){
-      const r=new FileReader();
-      imageUrl=await new Promise((res,rej)=>{r.onload=()=>res(r.result);r.onerror=rej;r.readAsDataURL(selectedFile);});
-    }
+    if(selectedFile){const r=new FileReader();imageUrl=await new Promise((res,rej)=>{r.onload=()=>res(r.result);r.onerror=rej;r.readAsDataURL(selectedFile);});}
+    const expiry=document.getElementById('fExpiry').value;
     const data={
-      category:cat,title,
-      thana:document.getElementById('fThana').value,
-      specialty:document.getElementById('fSpecialty').value.trim(),
-      education:document.getElementById('fEducation').value.trim(),
-      workplace:document.getElementById('fWorkplace').value.trim(),
-      address:document.getElementById('fAddress').value.trim(),
-      chambers:document.getElementById('fChambers').value.trim(),
-      timing:document.getElementById('fTiming').value.trim(),
-      phone:document.getElementById('fPhone').value.trim(),
-      mapUrl:document.getElementById('fMap').value.trim(),
-      description:document.getElementById('fDesc').value.trim(),
-      imageUrl,
+      category:cat,title,thana:document.getElementById('fThana').value,
+      specialty:document.getElementById('fSpecialty').value.trim(),education:document.getElementById('fEducation').value.trim(),
+      workplace:document.getElementById('fWorkplace').value.trim(),address:document.getElementById('fAddress').value.trim(),
+      chambers:document.getElementById('fChambers').value.trim(),timing:document.getElementById('fTiming').value.trim(),
+      phone:document.getElementById('fPhone').value.trim(),mapUrl:document.getElementById('fMap').value.trim(),
+      description:document.getElementById('fDesc').value.trim(),imageUrl,
+      expiresAt:expiry?new Date(expiry):null,
       createdAt:firebase.firestore.FieldValue.serverTimestamp(),
     };
     const eid=document.getElementById('editId').value;
-    if(eid){await db.collection('entries').doc(eid).update({...data});showToast('আপডেট হয়েছে ✅','success');}
+    if(eid){await db.collection('entries').doc(eid).update(data);showToast('আপডেট হয়েছে ✅','success');}
     else{await db.collection('entries').add(data);showToast('এন্ট্রি যোগ হয়েছে ✅','success');}
     clearForm();loadDashboard();
   }catch(e){showToast('সমস্যা: '+e.message,'error');}
   b.disabled=false;b.textContent='✅ সংরক্ষণ করুন';
 }
-
 function clearForm(){
-  ['fCat','fThana','fTitle','fSpecialty','fEducation','fWorkplace','fAddress','fChambers','fTiming','fPhone','fMap','fDesc','editId']
+  ['fCat','fThana','fTitle','fSpecialty','fEducation','fWorkplace','fAddress','fChambers','fTiming','fPhone','fMap','fDesc','fExpiry','editId']
     .forEach(id=>document.getElementById(id).value='');
-  document.getElementById('imgPreviewEl').style.display='none';
-  document.getElementById('imgPlaceholder').style.display='';
+  document.getElementById('imgPreviewEl').style.display='none';document.getElementById('imgPlaceholder').style.display='';
   selectedFile=null;document.getElementById('saveBtn').textContent='✅ সংরক্ষণ করুন';
 }
 
@@ -483,79 +580,71 @@ async function loadAdminEntries(){
     let q=db.collection('entries').orderBy('createdAt','desc');
     if(cf) q=q.where('category','==',cf);
     const snap=await q.get();
+    const now=new Date();
     adminAllEntries=snap.docs.map(d=>({id:d.id,...d.data()}));
-    renderAdminEntries(adminAllEntries);
-  }catch{document.getElementById('adminEntriesList').innerHTML='<p style="color:var(--danger)">ডেটা লোড সমস্যা</p>';}
+    renderAdminEntries(adminAllEntries,now);
+  }catch{document.getElementById('adminEntriesList').innerHTML='<p style="color:var(--danger)">লোড সমস্যা</p>';}
 }
-
-function renderAdminEntries(list){
+function renderAdminEntries(list,now=new Date()){
   if(!list.length){document.getElementById('adminEntriesList').innerHTML='<p style="color:var(--muted);font-size:.85rem">কোনো এন্ট্রি নেই</p>';return;}
-  document.getElementById('adminEntriesList').innerHTML=list.map(e=>`
-    <div class="ae">
-      <div class="ai">${e.imageUrl?`<img src="${e.imageUrl}" alt=""/>`:'<span>📋</span>'}</div>
+  document.getElementById('adminEntriesList').innerHTML=list.map(e=>{
+    const expired=e.expiresAt&&e.expiresAt.toDate&&e.expiresAt.toDate()<now;
+    return `<div class="ae">
+      <div class="ai">${e.imageUrl&&e.imageUrl.length>50?`<img src="${e.imageUrl}" alt=""/>`:'<span>📋</span>'}</div>
       <div class="an">
-        <div class="at2">${e.title}</div>
+        <div class="at2">${e.title} ${expired?'<span class="expired-badge">মেয়াদ শেষ</span>':''}</div>
         <div class="ac">${e.category||''} ${e.thana?'· '+e.thana:''}</div>
-        <div class="am">${e.phone||''}</div>
+        <div class="am">${e.phone||''} ${e.avgRating?'⭐'+e.avgRating.toFixed(1):''}</div>
       </div>
       <div class="aa">
         <button class="bsm" style="background:#fef3c7;color:#92400e" onclick="editEntry('${e.id}')">✏️</button>
-        <button class="bsm bd" onclick="deleteEntry('${e.id}','${(e.title||'').replace(/'/g,'')}')">🗑️</button>
+        <button class="bsm bd2" onclick="deleteEntry('${e.id}','${(e.title||'').replace(/'/g,'')}')">🗑️</button>
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
-
 document.addEventListener('DOMContentLoaded',()=>{
   document.getElementById('adminSearch').addEventListener('input',e=>{
     const q=e.target.value.toLowerCase();
     renderAdminEntries(adminAllEntries.filter(en=>
-      (en.title||'').toLowerCase().includes(q)||
-      (en.category||'').toLowerCase().includes(q)||
-      (en.thana||'').toLowerCase().includes(q)));
+      (en.title||'').toLowerCase().includes(q)||(en.category||'').toLowerCase().includes(q)||(en.thana||'').toLowerCase().includes(q)));
+  });
+  const us=document.getElementById('userSearch');
+  if(us) us.addEventListener('input',e=>{
+    const q=e.target.value.toLowerCase();
+    renderUsers(allUsers.filter(u=>(u.name||'').toLowerCase().includes(q)||(u.email||'').toLowerCase().includes(q)));
   });
 });
-
 async function deleteEntry(id,title){
   if(!confirm(`"${title}" মুছে ফেলবেন?`)) return;
   try{await db.collection('entries').doc(id).delete();showToast('মুছে ফেলা হয়েছে','success');loadAdminEntries();loadDashboard();}
   catch{showToast('সমস্যা হয়েছে','error');}
 }
-
 function editEntry(id){
   const e=adminAllEntries.find(x=>x.id===id);if(!e)return;
-  swTab('add',document.querySelector('.tabs .tab:nth-child(3)'));
-  document.getElementById('fCat').value=e.category||'';
-  document.getElementById('fThana').value=e.thana||'';
-  document.getElementById('fTitle').value=e.title||'';
-  document.getElementById('fSpecialty').value=e.specialty||'';
-  document.getElementById('fEducation').value=e.education||'';
-  document.getElementById('fWorkplace').value=e.workplace||'';
-  document.getElementById('fAddress').value=e.address||'';
-  document.getElementById('fChambers').value=e.chambers||'';
-  document.getElementById('fTiming').value=e.timing||'';
-  document.getElementById('fPhone').value=e.phone||'';
-  document.getElementById('fMap').value=e.mapUrl||'';
-  document.getElementById('fDesc').value=e.description||'';
+  swTab('add',document.querySelector('.tabs .tab:nth-child(4)'));
+  ['fCat','fThana','fTitle','fSpecialty','fEducation','fWorkplace','fAddress','fChambers','fTiming','fPhone','fMap','fDesc']
+    .forEach(fid=>{const key={fCat:'category',fThana:'thana',fTitle:'title',fSpecialty:'specialty',fEducation:'education',fWorkplace:'workplace',fAddress:'address',fChambers:'chambers',fTiming:'timing',fPhone:'phone',fMap:'mapUrl',fDesc:'description'}[fid];
+      document.getElementById(fid).value=e[key]||'';});
   document.getElementById('editId').value=id;
   if(e.imageUrl){document.getElementById('imgPreviewEl').src=e.imageUrl;document.getElementById('imgPreviewEl').style.display='block';document.getElementById('imgPlaceholder').style.display='none';}
   document.getElementById('saveBtn').textContent='✅ আপডেট করুন';
   window.scrollTo(0,0);
 }
 
-// USERS LIST
+// USERS
 let allUsers=[];
 async function loadUsers(){
   try{
     const snap=await db.collection('users').orderBy('createdAt','desc').get();
-    allUsers=snap.docs.map(d=>({id:d.id,...d.data()}));
-    renderUsers(allUsers);
+    allUsers=snap.docs.map(d=>({id:d.id,...d.data()}));renderUsers(allUsers);
   }catch{document.getElementById('userList').innerHTML='<p style="color:var(--danger)">লোড সমস্যা</p>';}
 }
 function renderUsers(list){
   if(!list.length){document.getElementById('userList').innerHTML='<p style="color:var(--muted);font-size:.85rem">কোনো ব্যবহারকারী নেই</p>';return;}
   document.getElementById('userList').innerHTML=list.map(u=>`
     <div class="ae">
-      <div class="ai" style="font-size:1.2rem">👤</div>
+      <div class="ai" style="font-size:1.2rem;background:var(--primary)">👤</div>
       <div class="an">
         <div class="at2">${u.name||'—'}</div>
         <div class="am">${u.email||''}</div>
@@ -563,27 +652,107 @@ function renderUsers(list){
       </div>
     </div>`).join('');
 }
-document.addEventListener('DOMContentLoaded',()=>{
-  const us=document.getElementById('userSearch');
-  if(us) us.addEventListener('input',e=>{
-    const q=e.target.value.toLowerCase();
-    renderUsers(allUsers.filter(u=>(u.name||'').toLowerCase().includes(q)||(u.email||'').toLowerCase().includes(q)));
-  });
-});
+
+// ANALYTICS
+async function loadAnalytics(){
+  try{
+    const snap=await db.collection('entries').get();
+    const catCount={},thanaCount={};
+    let topRated=[];
+    snap.docs.forEach(d=>{
+      const e=d.data();
+      catCount[e.category]=(catCount[e.category]||0)+1;
+      if(e.thana) thanaCount[e.thana]=(thanaCount[e.thana]||0)+1;
+      if(e.avgRating) topRated.push({title:e.title,rating:e.avgRating,count:e.reviewCount||0});
+    });
+    const maxCat=Math.max(...Object.values(catCount),1);
+    const CAT_NAMES={doctor:'ডাক্তার',hospital:'হাসপাতাল',diagnostic:'ডায়াগনস্টিক',tourist:'দর্শনীয়',hotel:'হোটেল',restaurant:'রেস্তুরেন্ট',education:'শিক্ষা',job:'চাকরি',blood:'রক্তদান',transport:'গাড়ি ভাড়া'};
+    document.getElementById('catChart').innerHTML=Object.entries(catCount).sort((a,b)=>b[1]-a[1]).slice(0,10).map(([k,v])=>`
+      <div class="chart-bar-row">
+        <div class="chart-bar-label">${CAT_NAMES[k]||k}</div>
+        <div class="chart-bar-bg"><div class="chart-bar-fill" style="width:${Math.round(v/maxCat*100)}%"><span class="chart-bar-num">${v}</span></div></div>
+      </div>`).join('');
+    const maxThana=Math.max(...Object.values(thanaCount),1);
+    document.getElementById('thanaChart').innerHTML=Object.entries(thanaCount).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`
+      <div class="chart-bar-row">
+        <div class="chart-bar-label">${k}</div>
+        <div class="chart-bar-bg"><div class="chart-bar-fill" style="width:${Math.round(v/maxThana*100)}%"><span class="chart-bar-num">${v}</span></div></div>
+      </div>`).join('');
+    topRated.sort((a,b)=>b.rating-a.rating);
+    document.getElementById('topRated').innerHTML=topRated.slice(0,5).map(e=>`
+      <div class="ae">
+        <div class="ai" style="font-size:1.2rem">⭐</div>
+        <div class="an"><div class="at2">${e.title}</div>
+        <div class="am">${'★'.repeat(Math.round(e.rating))} ${e.rating.toFixed(1)} (${e.count} রিভিউ)</div></div>
+      </div>`).join('')||'<p style="color:var(--muted);font-size:.85rem">কোনো রেটিং নেই</p>';
+  }catch(e){console.error(e);}
+}
+
+// BACKUP / EXPORT
+async function exportJSON(){
+  try{
+    const snap=await db.collection('entries').get();
+    const data=snap.docs.map(d=>({id:d.id,...d.data(),createdAt:d.data().createdAt?.toDate?.().toISOString()}));
+    const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+    const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+    a.download=`sunamganj_backup_${new Date().toISOString().slice(0,10)}.json`;a.click();
+    showToast('ব্যাকআপ ডাউনলোড হচ্ছে ✅','success');
+  }catch(e){showToast('সমস্যা: '+e.message,'error');}
+}
+
+// CSV IMPORT
+async function importCSV(e){
+  const file=e.target.files[0];if(!file)return;
+  const text=await file.text();
+  const lines=text.trim().split('\n').slice(1); // skip header
+  let count=0;
+  for(const line of lines){
+    const [category,title,thana,specialty,phone,address,timing,description]=line.split(',').map(s=>s.trim().replace(/^"|"$/g,''));
+    if(!category||!title) continue;
+    try{
+      await db.collection('entries').add({category,title,thana,specialty,phone,address,timing,description,
+        createdAt:firebase.firestore.FieldValue.serverTimestamp()});
+      count++;
+    }catch{}
+  }
+  showToast(`${count}টি এন্ট্রি ইমপোর্ট হয়েছে ✅`,'success');
+  loadAdminEntries();loadDashboard();
+  e.target.value='';
+}
+
+// DELETE EXPIRED
+async function deleteExpired(){
+  if(!confirm('মেয়াদ শেষ হওয়া সব এন্ট্রি মুছে ফেলবেন?')) return;
+  const now=new Date();
+  try{
+    const snap=await db.collection('entries').get();
+    let count=0;
+    for(const d of snap.docs){
+      const exp=d.data().expiresAt;
+      if(exp&&exp.toDate&&exp.toDate()<now){await d.ref.delete();count++;}
+    }
+    showToast(`${count}টি মেয়াদোত্তীর্ণ এন্ট্রি মুছে ফেলা হয়েছে`,'success');
+    loadAdminEntries();loadDashboard();
+  }catch(e){showToast('সমস্যা: '+e.message,'error');}
+}
 
 // SETTINGS
 async function loadSettings(){
   try{const d=await db.collection('settings').doc('site').get();
-    if(d.exists&&d.data().ticker) document.getElementById('sTicker').value=d.data().ticker||'';
+    if(d.exists){document.getElementById('sTicker').value=d.data().ticker||'';document.getElementById('sEmail').value=d.data().adminEmail||'';}
   }catch{}
 }
 async function saveSettings(){
   try{
-    await db.collection('settings').doc('site').set({ticker:document.getElementById('sTicker').value.trim()},{merge:true});
+    await db.collection('settings').doc('site').set({
+      ticker:document.getElementById('sTicker').value.trim(),
+      adminEmail:document.getElementById('sEmail').value.trim(),
+    },{merge:true});
     showToast('সেটিংস সংরক্ষিত হয়েছে ✅','success');
   }catch{showToast('সমস্যা হয়েছে','error');}
 }
 
+// TOAST
 function showToast(msg,type='success'){
   const t=document.getElementById('toast');t.textContent=msg;t.className='show '+type;
   setTimeout(()=>t.className='',2800);
