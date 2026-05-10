@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>সুনামগঞ্জ জিলা — লোকাল ডিরেক্টরি</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Noto+Serif+Bengali:wght@600;700&display=swap" rel="stylesheet"/>
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<style>
+:root{
+  --primary:#0d7c6e;
+  --primary-dark:#085f54;
+  --accent:#f5a623;
+  --bg:#f4f6f8;
+  --white:#ffffff;
+  --text:#1a1a2e;
+  --muted:#6b7280;
+  --card:#ffffff;
+  --border:#e5e7eb;
+  --radius:12px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Hind Siliguri',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+/* ── HEADER ── */
+header{
+  background:var(--primary);
+  padding:0 1rem;
+  position:sticky;top:0;z-index:100;
+  box-shadow:0 2px 8px rgba(0,0,0,.2);
+}
+.header-inner{
+  max-width:480px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;
+  height:56px;
+}
+.header-logo{
+  font-family:'Noto Serif Bengali',serif;
+  font-size:1.2rem;font-weight:700;
+  color:#fff;text-decoration:none;
+  display:flex;align-items:center;gap:.4rem;
+}
+.header-logo span{color:var(--accent)}
+.header-actions{display:flex;gap:.5rem}
+.btn-icon{
+  background:rgba(255,255,255,.15);border:none;
+  width:36px;height:36px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;color:#fff;font-size:1.1rem;
+  text-decoration:none;
+}
+.btn-icon:hover{background:rgba(255,255,255,.25)}
+
+/* ── TICKER ── */
+.ticker-wrap{
+  background:var(--primary-dark);
+  padding:.4rem 1rem;overflow:hidden;
+}
+.ticker-inner{
+  max-width:480px;margin:0 auto;
+  display:flex;align-items:center;gap:.6rem;
+}
+.ticker-label{
+  background:var(--accent);color:#fff;
+  font-size:.7rem;font-weight:700;
+  padding:.15rem .5rem;border-radius:4px;white-space:nowrap;
+}
+.ticker-text{
+  color:rgba(255,255,255,.9);font-size:.82rem;
+  white-space:nowrap;overflow:hidden;
+  animation:ticker 20s linear infinite;
+}
+@keyframes ticker{from{transform:translateX(100%)}to{transform:translateX(-100%)}}
+
+/* ── SEARCH ── */
+.search-wrap{
+  max-width:480px;margin:0 auto;
+  padding:.8rem 1rem;
+}
+.search-box{
+  display:flex;align-items:center;gap:.5rem;
+  background:var(--white);border-radius:50px;
+  border:2px solid var(--border);
+  padding:.5rem 1rem;
+  box-shadow:0 2px 8px rgba(0,0,0,.06);
+  transition:border-color .2s;
+}
+.search-box:focus-within{border-color:var(--primary)}
+.search-box input{
+  border:none;outline:none;width:100%;
+  font-family:'Hind Siliguri',sans-serif;
+  font-size:.95rem;color:var(--text);background:transparent;
+}
+.search-box .ico{color:var(--muted);font-size:1.1rem}
+
+/* ── BANNER ── */
+.banner-wrap{
+  max-width:480px;margin:0 auto;padding:0 1rem .8rem;
+}
+.banner{
+  border-radius:var(--radius);overflow:hidden;
+  height:130px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+  box-shadow:0 4px 12px rgba(0,0,0,.1);
+}
+.banner img{width:100%;height:100%;object-fit:cover}
+.banner-placeholder{color:rgba(255,255,255,.5);font-size:.85rem;text-align:center;padding:1rem}
+
+/* ── CATEGORIES ── */
+.section-title{
+  max-width:480px;margin:0 auto;
+  padding:.2rem 1rem .6rem;
+  font-size:.8rem;font-weight:600;color:var(--muted);
+  letter-spacing:.05em;text-transform:uppercase;
+}
+.cats-grid{
+  max-width:480px;margin:0 auto;
+  padding:0 .6rem .5rem;
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:.5rem;
+}
+.cat-item{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:.7rem .3rem;
+  display:flex;flex-direction:column;align-items:center;gap:.35rem;
+  cursor:pointer;text-decoration:none;color:var(--text);
+  transition:all .2s;box-shadow:0 1px 4px rgba(0,0,0,.05);
+}
+.cat-item:hover,.cat-item:active{
+  border-color:var(--primary);background:#f0faf8;
+  transform:translateY(-2px);box-shadow:0 4px 12px rgba(13,124,110,.12);
+}
+.cat-icon{font-size:1.8rem;line-height:1}
+.cat-name{font-size:.72rem;font-weight:600;text-align:center;line-height:1.3;color:var(--text)}
+
+/* ── BOTTOM NAV ── */
+.bottom-nav{
+  position:fixed;bottom:0;left:0;right:0;z-index:100;
+  background:var(--white);border-top:1px solid var(--border);
+  display:flex;justify-content:space-around;align-items:center;
+  height:58px;
+  box-shadow:0 -2px 10px rgba(0,0,0,.08);
+}
+.nav-item{
+  flex:1;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:2px;text-decoration:none;
+  color:var(--muted);font-size:.65rem;font-weight:500;
+  padding:.3rem 0;transition:color .2s;cursor:pointer;border:none;background:none;font-family:inherit;
+}
+.nav-item.active,.nav-item:hover{color:var(--primary)}
+.nav-item .nav-ico{font-size:1.3rem}
+.page-pad{padding-bottom:70px}
+
+/* ── TOAST ── */
+#toast{
+  position:fixed;bottom:70px;left:50%;transform:translateX(-50%);
+  background:#1a1a2e;color:#fff;padding:.5rem 1.2rem;
+  border-radius:50px;font-size:.85rem;opacity:0;
+  transition:opacity .3s;pointer-events:none;z-index:999;
+}
+#toast.show{opacity:1}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a class="header-logo" href="index.html">সুনামগঞ্জ <span>জিলা</span></a>
+    <div class="header-actions">
+      <a class="btn-icon" href="admin.html" title="অ্যাডমিন">⚙️</a>
+    </div>
+  </div>
+</header>
+
+<div class="ticker-wrap">
+  <div class="ticker-inner">
+    <span class="ticker-label">নোটিশ</span>
+    <div class="ticker-text" id="tickerText">স্বাগতম! সুনামগঞ্জ জিলা লোকাল ডিরেক্টরিতে আপনাকে স্বাগতম।</div>
+  </div>
+</div>
+
+<div class="search-wrap">
+  <div class="search-box">
+    <span class="ico">🔍</span>
+    <input type="text" id="searchInput" placeholder="খুঁজুন (ডাক্তার, হাসপাতাল, স্থান...)"/>
+  </div>
+</div>
+
+<!-- Banner / Ad -->
+<div class="banner-wrap">
+  <div class="banner" id="heroBanner">
+    <div class="banner-placeholder">বিজ্ঞাপন / ব্যানার<br><small>অ্যাডমিন থেকে পরিবর্তন করুন</small></div>
+  </div>
+</div>
+
+<div class="section-title">সকল সেবা</div>
+
+<div class="cats-grid page-pad" id="catsGrid">
+  <!-- loaded dynamically -->
+</div>
+
+<div id="toast"></div>
+
+<!-- Bottom Nav -->
+<nav class="bottom-nav">
+  <button class="nav-item active" onclick="location.href='index.html'">
+    <span class="nav-ico">🏠</span>হোম
+  </button>
+  <button class="nav-item" onclick="location.href='listing.html?cat=contact'">
+    <span class="nav-ico">📞</span>যোগাযোগ
+  </button>
+  <button class="nav-item" onclick="location.href='listing.html?cat=news'">
+    <span class="nav-ico">📰</span>পোস্ট
+  </button>
+  <button class="nav-item" onclick="location.href='admin.html'">
+    <span class="nav-ico">👤</span>প্রোফাইল
+  </button>
+</nav>
+
+<script>
+// ═══════════════════════════════════
+// FIREBASE CONFIG — আপনার নিজের config দিন
+// ═══════════════════════════════════
+const firebaseConfig = {
+  apiKey: "AIzaSyA9GwLcflSBxtQK363uo3Gnc0FV6mdZqQ0",
+  authDomain: "sunamganj-zila-610da.firebaseapp.com",
+  projectId: "sunamganj-zila-610da",
+  storageBucket: "sunamganj-zila-610da.firebasestorage.app",
+  messagingSenderId: "679956536370",
+  appId: "1:679956536370:web:c8ab22f72aa0431d94b02b",
+  measurementId: "G-QDV39Z1C1B"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+// ─── Default categories (shows even before Firebase) ───
+const DEFAULT_CATS = [
+  {id:'doctor',   icon:'👨‍⚕️', name:'ডাক্তার'},
+  {id:'hospital', icon:'🏥', name:'হাসপাতাল'},
+  {id:'diagnostic',icon:'🔬',name:'ডায়াগনস্টিক'},
+  {id:'blood',    icon:'🩸', name:'রক্তদান'},
+  {id:'transport',icon:'🚗', name:'গাড়ি ভাড়া'},
+  {id:'emergency',icon:'🆘', name:'জরুরী নাম্বার'},
+  {id:'shopping', icon:'🛒', name:'ক্রয় ও বিক্রয়'},
+  {id:'fire',     icon:'🔥', name:'ফায়ার সার্ভিস'},
+  {id:'police',   icon:'👮', name:'থানা-পুলিশ'},
+  {id:'lawyer',   icon:'⚖️', name:'আইনজীবী'},
+  {id:'job',      icon:'💼', name:'চাকরি'},
+  {id:'teacher',  icon:'📚', name:'শিক্ষক'},
+  {id:'rent',     icon:'🏠', name:'বাসা ভাড়া'},
+  {id:'land',     icon:'🏗️', name:'ফ্ল্যাট ও জমি'},
+  {id:'entrepreneur',icon:'🚀',name:'উদ্যোক্তা'},
+  {id:'news',     icon:'📰', name:'আজকের সুনামগঞ্জ'},
+  {id:'history',  icon:'📖', name:'জেলার ইতিহাস'},
+  {id:'bus',      icon:'🚌', name:'বাসের সময়সূচি'},
+  {id:'train',    icon:'🚂', name:'ট্রেনের সময়সূচি'},
+  {id:'hotel',    icon:'🏨', name:'হোটেল'},
+  {id:'restaurant',icon:'🍽️',name:'রেস্তুরেন্ট'},
+  {id:'tourist',  icon:'🏞️', name:'দর্শনীয় স্থান'},
+  {id:'mechanic', icon:'🔧', name:'মিস্ত্রি'},
+  {id:'nursery',  icon:'🌿', name:'নার্সারি'},
+  {id:'electric', icon:'⚡', name:'বিদ্যুৎ অফিস'},
+  {id:'education',icon:'🎓', name:'শিক্ষা প্রতিষ্ঠান'},
+  {id:'courier',  icon:'📦', name:'কুরিয়ার সার্ভিস'},
+  {id:'video',    icon:'▶️', name:'ভিডিও দেখুন'},
+  {id:'matrimony',icon:'💒', name:'পাত্র-পাত্রী'},
+  {id:'salon',    icon:'💇', name:'পার্লার ও সেলুন'},
+  {id:'website',  icon:'🌐', name:'ওয়েবসাইট'},
+  {id:'rep',      icon:'🤝', name:'জনপ্রতিনিধি'},
+];
+
+function renderCategories(cats){
+  const grid = document.getElementById('catsGrid');
+  grid.innerHTML = cats.map(c=>`
+    <a class="cat-item" href="listing.html?cat=${c.id}&name=${encodeURIComponent(c.name)}">
+      <span class="cat-icon">${c.icon}</span>
+      <span class="cat-name">${c.name}</span>
+    </a>`).join('');
+}
+
+// Load categories from Firestore, fall back to defaults
+async function loadCategories(){
+  try{
+    const snap = await db.collection('categories').orderBy('order').get();
+    if(!snap.empty){
+      renderCategories(snap.docs.map(d=>({id:d.id,...d.data()})));
+    } else {
+      renderCategories(DEFAULT_CATS);
+    }
+  } catch(e){
+    renderCategories(DEFAULT_CATS);
+  }
+}
+
+// Load ticker
+async function loadTicker(){
+  try{
+    const doc = await db.collection('settings').doc('site').get();
+    if(doc.exists && doc.data().ticker){
+      document.getElementById('tickerText').textContent = doc.data().ticker;
+    }
+  } catch(e){}
+}
+
+// Search redirect
+document.getElementById('searchInput').addEventListener('keydown',e=>{
+  if(e.key==='Enter' && e.target.value.trim()){
+    location.href='listing.html?search='+encodeURIComponent(e.target.value.trim());
+  }
+});
+
+loadCategories();
+loadTicker();
+
+// Toast helper
+window.toast = (msg)=>{
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
+};
+</script>
+</body>
+</html>
