@@ -5,227 +5,222 @@
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>সুনামগঞ্জ জিলা — লোকাল ডিরেক্টরি</title>
 <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Noto+Serif+Bengali:wght@600;700&display=swap" rel="stylesheet"/>
-<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <style>
 :root{
-  --primary:#0d7c6e;
-  --primary-dark:#085f54;
-  --accent:#f5a623;
-  --bg:#f4f6f8;
-  --white:#ffffff;
-  --text:#1a1a2e;
-  --muted:#6b7280;
-  --card:#ffffff;
-  --border:#e5e7eb;
-  --radius:12px;
+  --primary:#0d7c6e;--primary-dark:#085f54;--accent:#f5a623;
+  --bg:#f4f6f8;--white:#fff;--text:#1a1a2e;--muted:#6b7280;
+  --card:#fff;--border:#e5e7eb;--radius:12px;--danger:#ef4444;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Hind Siliguri',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
-
-/* ── HEADER ── */
-header{
-  background:var(--primary);
-  padding:0 1rem;
-  position:sticky;top:0;z-index:100;
-  box-shadow:0 2px 8px rgba(0,0,0,.2);
-}
-.header-inner{
-  max-width:480px;margin:0 auto;
-  display:flex;align-items:center;justify-content:space-between;
-  height:56px;
-}
-.header-logo{
-  font-family:'Noto Serif Bengali',serif;
-  font-size:1.2rem;font-weight:700;
-  color:#fff;text-decoration:none;
-  display:flex;align-items:center;gap:.4rem;
-}
+header{background:var(--primary);padding:0 1rem;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.header-inner{max-width:480px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:56px}
+.header-logo{font-family:'Noto Serif Bengali',serif;font-size:1.2rem;font-weight:700;color:#fff;text-decoration:none;display:flex;align-items:center;gap:.4rem}
 .header-logo span{color:var(--accent)}
 .header-actions{display:flex;gap:.5rem}
-.btn-icon{
-  background:rgba(255,255,255,.15);border:none;
-  width:36px;height:36px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  cursor:pointer;color:#fff;font-size:1.1rem;
-  text-decoration:none;
-}
+.btn-icon{background:rgba(255,255,255,.15);border:none;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;font-size:1.1rem;text-decoration:none}
 .btn-icon:hover{background:rgba(255,255,255,.25)}
-
-/* ── TICKER ── */
-.ticker-wrap{
-  background:var(--primary-dark);
-  padding:.4rem 1rem;overflow:hidden;
-}
-.ticker-inner{
-  max-width:480px;margin:0 auto;
-  display:flex;align-items:center;gap:.6rem;
-}
-.ticker-label{
-  background:var(--accent);color:#fff;
-  font-size:.7rem;font-weight:700;
-  padding:.15rem .5rem;border-radius:4px;white-space:nowrap;
-}
-.ticker-text{
-  color:rgba(255,255,255,.9);font-size:.82rem;
-  white-space:nowrap;overflow:hidden;
-  animation:ticker 20s linear infinite;
-}
+.ticker-wrap{background:var(--primary-dark);padding:.4rem 1rem;overflow:hidden}
+.ticker-inner{max-width:480px;margin:0 auto;display:flex;align-items:center;gap:.6rem}
+.ticker-label{background:var(--accent);color:#fff;font-size:.7rem;font-weight:700;padding:.15rem .5rem;border-radius:4px;white-space:nowrap}
+.ticker-text{color:rgba(255,255,255,.9);font-size:.82rem;white-space:nowrap;overflow:hidden;animation:ticker 20s linear infinite}
 @keyframes ticker{from{transform:translateX(100%)}to{transform:translateX(-100%)}}
-
-/* ── SEARCH ── */
-.search-wrap{
-  max-width:480px;margin:0 auto;
-  padding:.8rem 1rem;
-}
-.search-box{
-  display:flex;align-items:center;gap:.5rem;
-  background:var(--white);border-radius:50px;
-  border:2px solid var(--border);
-  padding:.5rem 1rem;
-  box-shadow:0 2px 8px rgba(0,0,0,.06);
-  transition:border-color .2s;
-}
+.search-wrap{max-width:480px;margin:0 auto;padding:.8rem 1rem}
+.search-box{display:flex;align-items:center;gap:.5rem;background:var(--white);border-radius:50px;border:2px solid var(--border);padding:.5rem 1rem;box-shadow:0 2px 8px rgba(0,0,0,.06);transition:border-color .2s}
 .search-box:focus-within{border-color:var(--primary)}
-.search-box input{
-  border:none;outline:none;width:100%;
-  font-family:'Hind Siliguri',sans-serif;
-  font-size:.95rem;color:var(--text);background:transparent;
-}
+.search-box input{border:none;outline:none;width:100%;font-family:'Hind Siliguri',sans-serif;font-size:.95rem;color:var(--text);background:transparent}
 .search-box .ico{color:var(--muted);font-size:1.1rem}
-
-/* ── BANNER ── */
-.banner-wrap{
-  max-width:480px;margin:0 auto;padding:0 1rem .8rem;
-}
-.banner{
-  border-radius:var(--radius);overflow:hidden;
-  height:130px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));
-  display:flex;align-items:center;justify-content:center;
-  position:relative;
-  box-shadow:0 4px 12px rgba(0,0,0,.1);
-}
+.banner-wrap{max-width:480px;margin:0 auto;padding:0 1rem .8rem}
+.banner{border-radius:var(--radius);overflow:hidden;height:130px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));display:flex;align-items:center;justify-content:center;position:relative;box-shadow:0 4px 12px rgba(0,0,0,.1)}
 .banner img{width:100%;height:100%;object-fit:cover}
 .banner-placeholder{color:rgba(255,255,255,.5);font-size:.85rem;text-align:center;padding:1rem}
-
-/* ── CATEGORIES ── */
-.section-title{
-  max-width:480px;margin:0 auto;
-  padding:.2rem 1rem .6rem;
-  font-size:.8rem;font-weight:600;color:var(--muted);
-  letter-spacing:.05em;text-transform:uppercase;
-}
-.cats-grid{
-  max-width:480px;margin:0 auto;
-  padding:0 .6rem .5rem;
-  display:grid;grid-template-columns:repeat(4,1fr);
-  gap:.5rem;
-}
-.cat-item{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:var(--radius);
-  padding:.7rem .3rem;
-  display:flex;flex-direction:column;align-items:center;gap:.35rem;
-  cursor:pointer;text-decoration:none;color:var(--text);
-  transition:all .2s;box-shadow:0 1px 4px rgba(0,0,0,.05);
-}
-.cat-item:hover,.cat-item:active{
-  border-color:var(--primary);background:#f0faf8;
-  transform:translateY(-2px);box-shadow:0 4px 12px rgba(13,124,110,.12);
-}
+.section-title{max-width:480px;margin:0 auto;padding:.2rem 1rem .6rem;font-size:.8rem;font-weight:600;color:var(--muted);letter-spacing:.05em;text-transform:uppercase}
+.cats-grid{max-width:480px;margin:0 auto;padding:0 .6rem .5rem;display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem}
+.cat-item{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:.7rem .3rem;display:flex;flex-direction:column;align-items:center;gap:.35rem;cursor:pointer;text-decoration:none;color:var(--text);transition:all .2s;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.cat-item:hover,.cat-item:active{border-color:var(--primary);background:#f0faf8;transform:translateY(-2px);box-shadow:0 4px 12px rgba(13,124,110,.12)}
 .cat-icon{font-size:1.8rem;line-height:1}
 .cat-name{font-size:.72rem;font-weight:600;text-align:center;line-height:1.3;color:var(--text)}
-
-/* ── BOTTOM NAV ── */
-.bottom-nav{
-  position:fixed;bottom:0;left:0;right:0;z-index:100;
-  background:var(--white);border-top:1px solid var(--border);
-  display:flex;justify-content:space-around;align-items:center;
-  height:58px;
-  box-shadow:0 -2px 10px rgba(0,0,0,.08);
-}
-.nav-item{
-  flex:1;display:flex;flex-direction:column;align-items:center;
-  justify-content:center;gap:2px;text-decoration:none;
-  color:var(--muted);font-size:.65rem;font-weight:500;
-  padding:.3rem 0;transition:color .2s;cursor:pointer;border:none;background:none;font-family:inherit;
-}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:100;background:var(--white);border-top:1px solid var(--border);display:flex;justify-content:space-around;align-items:center;height:58px;box-shadow:0 -2px 10px rgba(0,0,0,.08)}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;text-decoration:none;color:var(--muted);font-size:.65rem;font-weight:500;padding:.3rem 0;transition:color .2s;cursor:pointer;border:none;background:none;font-family:inherit}
 .nav-item.active,.nav-item:hover{color:var(--primary)}
 .nav-item .nav-ico{font-size:1.3rem}
 .page-pad{padding-bottom:70px}
-
-/* ── TOAST ── */
-#toast{
-  position:fixed;bottom:70px;left:50%;transform:translateX(-50%);
-  background:#1a1a2e;color:#fff;padding:.5rem 1.2rem;
-  border-radius:50px;font-size:.85rem;opacity:0;
-  transition:opacity .3s;pointer-events:none;z-index:999;
-}
+/* MODAL */
+.mo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:200;align-items:flex-end;justify-content:center}
+.mo.open{display:flex}
+.mc{background:var(--white);border-radius:20px 20px 0 0;width:100%;max-width:480px;padding:1.4rem 1.2rem 2rem;max-height:92vh;overflow-y:auto;animation:su .3s ease}
+@keyframes su{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.mh{width:40px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 1.1rem}
+.mt{font-family:'Noto Serif Bengali',serif;font-size:1.1rem;font-weight:700;color:var(--primary);text-align:center;margin-bottom:1rem}
+.auth-tabs{display:flex;border:1.5px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:1rem}
+.at{flex:1;padding:.52rem;text-align:center;font-family:'Hind Siliguri',sans-serif;font-size:.88rem;font-weight:600;cursor:pointer;border:none;background:none;color:var(--muted);transition:all .2s}
+.at.active{background:var(--primary);color:#fff}
+.ff{margin-bottom:.85rem}
+.ff label{display:block;font-size:.78rem;font-weight:600;color:var(--muted);margin-bottom:.28rem}
+.ff input,.ff select,.ff textarea{width:100%;padding:.6rem .85rem;border:1.5px solid var(--border);border-radius:var(--radius);font-family:'Hind Siliguri',sans-serif;font-size:.9rem;outline:none;transition:border-color .2s;color:var(--text);background:var(--white)}
+.ff input:focus,.ff select:focus,.ff textarea:focus{border-color:var(--primary)}
+.ff textarea{resize:vertical;min-height:72px}
+.bf{width:100%;padding:.7rem;background:var(--primary);color:#fff;border:none;border-radius:var(--radius);font-family:'Hind Siliguri',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;transition:background .2s}
+.bf:hover{background:var(--primary-dark)}
+.bf:disabled{opacity:.6;cursor:not-allowed}
+.em{color:var(--danger);font-size:.79rem;margin-top:.35rem;display:none}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:.65rem}
+@media(max-width:360px){.g2{grid-template-columns:1fr}}
+.prof-card{background:linear-gradient(135deg,var(--primary),var(--primary-dark));border-radius:14px;padding:1.2rem;color:#fff;text-align:center;margin-bottom:1rem}
+.prof-av{width:54px;height:54px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin:0 auto .5rem}
+.prof-name{font-family:'Noto Serif Bengali',serif;font-size:1rem;font-weight:700}
+.prof-email{font-size:.76rem;opacity:.8;margin-top:.1rem}
+.img-up{width:100%;height:110px;border:2px dashed var(--border);border-radius:var(--radius);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;background:#fafafa;transition:border-color .2s;overflow:hidden;position:relative}
+.img-up:hover{border-color:var(--primary)}
+.img-up img{width:100%;height:100%;object-fit:cover;display:none;position:absolute;inset:0}
+.img-up .iph{text-align:center;color:var(--muted);font-size:.8rem;pointer-events:none}
+.iph span{display:block;font-size:1.6rem;margin-bottom:.15rem}
+#toast{position:fixed;bottom:70px;left:50%;transform:translateX(-50%);background:#1a1a2e;color:#fff;padding:.45rem 1.1rem;border-radius:50px;font-size:.83rem;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999;white-space:nowrap}
 #toast.show{opacity:1}
+#toast.ok{background:var(--primary)}
+#toast.bad{background:var(--danger)}
 </style>
 </head>
 <body>
-
 <header>
   <div class="header-inner">
     <a class="header-logo" href="index.html">সুনামগঞ্জ <span>জিলা</span></a>
     <div class="header-actions">
-      <a class="btn-icon" href="admin.html" title="অ্যাডমিন">⚙️</a>
+      <button class="btn-icon" id="hUserBtn" onclick="openAuthOrProfile()">👤</button>
+      <a class="btn-icon" href="admin.html">⚙️</a>
     </div>
   </div>
 </header>
-
-<div class="ticker-wrap">
-  <div class="ticker-inner">
-    <span class="ticker-label">নোটিশ</span>
-    <div class="ticker-text" id="tickerText">স্বাগতম! সুনামগঞ্জ জিলা লোকাল ডিরেক্টরিতে আপনাকে স্বাগতম।</div>
-  </div>
-</div>
-
-<div class="search-wrap">
-  <div class="search-box">
-    <span class="ico">🔍</span>
-    <input type="text" id="searchInput" placeholder="খুঁজুন (ডাক্তার, হাসপাতাল, স্থান...)"/>
-  </div>
-</div>
-
-<!-- Banner / Ad -->
-<div class="banner-wrap">
-  <div class="banner" id="heroBanner">
-    <div class="banner-placeholder">বিজ্ঞাপন / ব্যানার<br><small>অ্যাডমিন থেকে পরিবর্তন করুন</small></div>
-  </div>
-</div>
-
+<div class="ticker-wrap"><div class="ticker-inner"><span class="ticker-label">নোটিশ</span><div class="ticker-text" id="tickerText">স্বাগতম! সুনামগঞ্জ জিলা লোকাল ডিরেক্টরিতে আপনাকে স্বাগতম।</div></div></div>
+<div class="search-wrap"><div class="search-box"><span class="ico">🔍</span><input type="text" id="searchInput" placeholder="খুঁজুন (ডাক্তার, হাসপাতাল, স্থান...)"/></div></div>
+<div class="banner-wrap"><div class="banner" id="heroBanner"><div class="banner-placeholder">বিজ্ঞাপন / ব্যানার<br><small>অ্যাডমিন থেকে পরিবর্তন করুন</small></div></div></div>
 <div class="section-title">সকল সেবা</div>
-
-<div class="cats-grid page-pad" id="catsGrid">
-  <!-- loaded dynamically -->
-</div>
-
+<div class="cats-grid page-pad" id="catsGrid"></div>
 <div id="toast"></div>
 
-<!-- Bottom Nav -->
 <nav class="bottom-nav">
-  <button class="nav-item active" onclick="location.href='index.html'">
-    <span class="nav-ico">🏠</span>হোম
-  </button>
-  <button class="nav-item" onclick="location.href='listing.html?cat=contact'">
-    <span class="nav-ico">📞</span>যোগাযোগ
-  </button>
-  <button class="nav-item" onclick="location.href='listing.html?cat=news'">
-    <span class="nav-ico">📰</span>পোস্ট
-  </button>
-  <button class="nav-item" onclick="location.href='admin.html'">
-    <span class="nav-ico">👤</span>প্রোফাইল
-  </button>
+  <button class="nav-item active" onclick="location.href='index.html'"><span class="nav-ico">🏠</span>হোম</button>
+  <button class="nav-item" onclick="location.href='listing.html?cat=news&name=আজকের+সুনামগঞ্জ'"><span class="nav-ico">📰</span>পোস্ট</button>
+  <button class="nav-item" onclick="openSubmitModal()"><span class="nav-ico">➕</span>যোগ করুন</button>
+  <button class="nav-item" id="profileNavBtn" onclick="openAuthOrProfile()"><span class="nav-ico">👤</span><span id="profileNavLabel">লগইন</span></button>
 </nav>
 
+<!-- AUTH MODAL -->
+<div class="mo" id="authMo" onclick="cib(event,'authMo')">
+ <div class="mc">
+  <div class="mh"></div>
+  <div id="authForms">
+   <div class="auth-tabs">
+    <button class="at active" id="tabL" onclick="swTab('l')">লগইন</button>
+    <button class="at" id="tabR" onclick="swTab('r')">নিবন্ধন</button>
+   </div>
+   <!-- LOGIN -->
+   <div id="fL">
+    <div class="mt">আপনার অ্যাকাউন্টে প্রবেশ করুন</div>
+    <div class="ff"><label>ইমেইল</label><input type="email" id="lEm" placeholder="example@email.com"/></div>
+    <div class="ff"><label>পাসওয়ার্ড</label><input type="password" id="lPw" placeholder="পাসওয়ার্ড" onkeydown="if(event.key==='Enter')doLogin()"/></div>
+    <div class="em" id="lErr"></div>
+    <button class="bf" id="lBtn" onclick="doLogin()">লগইন করুন</button>
+    <p style="text-align:center;margin-top:.7rem;font-size:.8rem;color:var(--muted)">অ্যাকাউন্ট নেই? <span style="color:var(--primary);cursor:pointer;font-weight:600" onclick="swTab('r')">নিবন্ধন করুন</span></p>
+   </div>
+   <!-- REGISTER -->
+   <div id="fR" style="display:none">
+    <div class="mt">নতুন অ্যাকাউন্ট তৈরি করুন</div>
+    <div class="ff"><label>আপনার নাম</label><input type="text" id="rNm" placeholder="নাম"/></div>
+    <div class="ff"><label>ইমেইল</label><input type="email" id="rEm" placeholder="example@email.com"/></div>
+    <div class="ff"><label>পাসওয়ার্ড (কমপক্ষে ৬ অক্ষর)</label><input type="password" id="rPw" placeholder="পাসওয়ার্ড" onkeydown="if(event.key==='Enter')doRegister()"/></div>
+    <div class="em" id="rErr"></div>
+    <button class="bf" id="rBtn" onclick="doRegister()">নিবন্ধন করুন</button>
+    <p style="text-align:center;margin-top:.7rem;font-size:.8rem;color:var(--muted)">আগে থেকে অ্যাকাউন্ট আছে? <span style="color:var(--primary);cursor:pointer;font-weight:600" onclick="swTab('l')">লগইন করুন</span></p>
+   </div>
+  </div>
+  <!-- PROFILE -->
+  <div id="profPanel" style="display:none">
+   <div class="prof-card">
+    <div class="prof-av">👤</div>
+    <div class="prof-name" id="pNm">—</div>
+    <div class="prof-email" id="pEm">—</div>
+   </div>
+   <div style="display:flex;flex-direction:column;gap:.6rem">
+    <button class="bf" onclick="cm('authMo');openSubmitModal()">➕ নতুন এন্ট্রি যোগ করুন</button>
+    <button class="bf" style="background:#f3f4f6;color:var(--text)" onclick="viewMySubs()">📋 আমার জমা দেওয়া তথ্য</button>
+    <button style="width:100%;padding:.65rem;background:#fff;color:var(--danger);border:1.5px solid #fca5a5;border-radius:var(--radius);font-family:'Hind Siliguri',sans-serif;font-size:.9rem;font-weight:600;cursor:pointer" onclick="doLogout()">🚪 লগআউট</button>
+   </div>
+  </div>
+ </div>
+</div>
+
+<!-- SUBMIT MODAL -->
+<div class="mo" id="subMo" onclick="cib(event,'subMo')">
+ <div class="mc">
+  <div class="mh"></div>
+  <div class="mt">➕ নতুন তথ্য যোগ করুন</div>
+  <p style="font-size:.78rem;color:#92400e;text-align:center;background:#fef3c7;border-radius:8px;padding:.45rem;margin-bottom:.9rem">অ্যাডমিনের অনুমোদনের পর সাইটে দেখাবে</p>
+  <div class="ff">
+   <label>ছবি (ঐচ্ছিক)</label>
+   <div class="img-up" onclick="document.getElementById('siFile').click()">
+    <img id="siPrev" alt=""/>
+    <div class="iph" id="siPh"><span>📷</span>ছবি বেছে নিন</div>
+   </div>
+   <input type="file" id="siFile" accept="image/*" style="display:none" onchange="prevSImg(event)"/>
+  </div>
+  <div class="g2">
+   <div class="ff"><label>ক্যাটাগরি *</label>
+    <select id="sCt">
+     <option value="">বেছে নিন</option>
+     <option value="doctor">ডাক্তার</option><option value="hospital">হাসপাতাল</option>
+     <option value="diagnostic">ডায়াগনস্টিক</option><option value="blood">রক্তদান</option>
+     <option value="transport">গাড়ি ভাড়া</option><option value="emergency">জরুরী নাম্বার</option>
+     <option value="shopping">ক্রয় ও বিক্রয়</option><option value="police">থানা-পুলিশ</option>
+     <option value="lawyer">আইনজীবী</option><option value="job">চাকরি</option>
+     <option value="teacher">শিক্ষক</option><option value="rent">বাসা ভাড়া</option>
+     <option value="land">ফ্ল্যাট ও জমি</option><option value="entrepreneur">উদ্যোক্তা</option>
+     <option value="news">আজকের সুনামগঞ্জ</option><option value="hotel">হোটেল</option>
+     <option value="restaurant">রেস্তুরেন্ট</option><option value="tourist">দর্শনীয় স্থান</option>
+     <option value="mechanic">মিস্ত্রি</option><option value="education">শিক্ষা প্রতিষ্ঠান</option>
+     <option value="courier">কুরিয়ার সার্ভিস</option><option value="matrimony">পাত্র-পাত্রী</option>
+     <option value="salon">পার্লার ও সেলুন</option>
+    </select>
+   </div>
+   <div class="ff"><label>উপজেলা</label>
+    <select id="sTh">
+     <option value="">বেছে নিন</option>
+     <option>সুনামগঞ্জ সদর</option><option>ছাতক</option><option>জগন্নাথপুর</option>
+     <option>দিরাই</option><option>ধর্মপাশা</option><option>দোয়ারাবাজার</option>
+     <option>তাহিরপুর</option><option>বিশ্বম্ভরপুর</option><option>শাল্লা</option>
+     <option>জামালগঞ্জ</option><option>মধ্যনগর</option><option>দক্ষিণ সুনামগঞ্জ</option>
+    </select>
+   </div>
+  </div>
+  <div class="ff"><label>শিরোনাম / নাম *</label><input type="text" id="sTi" placeholder="যেমন: ডাঃ সুমন রায়"/></div>
+  <div class="g2">
+   <div class="ff"><label>বিশেষজ্ঞ</label><input type="text" id="sSp" placeholder="হৃদরোগ"/></div>
+   <div class="ff"><label>ফোন</label><input type="tel" id="sPh" placeholder="01XXXXXXXXX"/></div>
+  </div>
+  <div class="ff"><label>ঠিকানা</label><input type="text" id="sAd" placeholder="পূর্ণ ঠিকানা"/></div>
+  <div class="ff"><label>সময়সূচি</label><input type="text" id="sTm" placeholder="সকাল ৯টা - বিকাল ৫টা"/></div>
+  <div class="ff"><label>গুগল ম্যাপ লিংক</label><input type="url" id="sMp" placeholder="https://maps.google.com/..."/></div>
+  <div class="ff"><label>বিস্তারিত বিবরণ</label><textarea id="sDc" placeholder="বিস্তারিত লিখুন..."></textarea></div>
+  <div class="em" id="sErr"></div>
+  <button class="bf" id="sBtn" onclick="submitEntry()">📤 জমা দিন (অনুমোদনের জন্য)</button>
+  <button style="width:100%;margin-top:.45rem;padding:.55rem;background:none;border:none;color:var(--muted);font-family:inherit;font-size:.85rem;cursor:pointer" onclick="cm('subMo')">বাতিল করুন</button>
+ </div>
+</div>
+
+<!-- MY SUBS MODAL -->
+<div class="mo" id="mySubMo" onclick="cib(event,'mySubMo')">
+ <div class="mc">
+  <div class="mh"></div>
+  <div class="mt">📋 আমার জমা দেওয়া তথ্য</div>
+  <div id="mySubList"><p style="color:var(--muted);font-size:.85rem;text-align:center">লোড হচ্ছে...</p></div>
+  <button style="width:100%;margin-top:1rem;padding:.6rem;background:#f3f4f6;border:none;border-radius:var(--radius);font-family:inherit;font-size:.88rem;cursor:pointer;color:var(--text)" onclick="cm('mySubMo')">বন্ধ করুন</button>
+ </div>
+</div>
+
 <script>
-// ═══════════════════════════════════
-// FIREBASE CONFIG — আপনার নিজের config দিন
-// ═══════════════════════════════════
 const firebaseConfig = {
   apiKey: "AIzaSyA9GwLcflSBxtQK363uo3Gnc0FV6mdZqQ0",
   authDomain: "sunamganj-zila-610da.firebaseapp.com",
@@ -236,93 +231,213 @@ const firebaseConfig = {
   measurementId: "G-QDV39Z1C1B"
 };
 firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
+const db=firebase.firestore(), auth=firebase.auth();
 
-// ─── Default categories (shows even before Firebase) ───
-const DEFAULT_CATS = [
-  {id:'doctor',   icon:'👨‍⚕️', name:'ডাক্তার'},
-  {id:'hospital', icon:'🏥', name:'হাসপাতাল'},
-  {id:'diagnostic',icon:'🔬',name:'ডায়াগনস্টিক'},
-  {id:'blood',    icon:'🩸', name:'রক্তদান'},
-  {id:'transport',icon:'🚗', name:'গাড়ি ভাড়া'},
-  {id:'emergency',icon:'🆘', name:'জরুরী নাম্বার'},
-  {id:'shopping', icon:'🛒', name:'ক্রয় ও বিক্রয়'},
-  {id:'fire',     icon:'🔥', name:'ফায়ার সার্ভিস'},
-  {id:'police',   icon:'👮', name:'থানা-পুলিশ'},
-  {id:'lawyer',   icon:'⚖️', name:'আইনজীবী'},
-  {id:'job',      icon:'💼', name:'চাকরি'},
-  {id:'teacher',  icon:'📚', name:'শিক্ষক'},
-  {id:'rent',     icon:'🏠', name:'বাসা ভাড়া'},
-  {id:'land',     icon:'🏗️', name:'ফ্ল্যাট ও জমি'},
-  {id:'entrepreneur',icon:'🚀',name:'উদ্যোক্তা'},
-  {id:'news',     icon:'📰', name:'আজকের সুনামগঞ্জ'},
-  {id:'history',  icon:'📖', name:'জেলার ইতিহাস'},
-  {id:'bus',      icon:'🚌', name:'বাসের সময়সূচি'},
-  {id:'train',    icon:'🚂', name:'ট্রেনের সময়সূচি'},
-  {id:'hotel',    icon:'🏨', name:'হোটেল'},
-  {id:'restaurant',icon:'🍽️',name:'রেস্তুরেন্ট'},
-  {id:'tourist',  icon:'🏞️', name:'দর্শনীয় স্থান'},
-  {id:'mechanic', icon:'🔧', name:'মিস্ত্রি'},
-  {id:'nursery',  icon:'🌿', name:'নার্সারি'},
-  {id:'electric', icon:'⚡', name:'বিদ্যুৎ অফিস'},
-  {id:'education',icon:'🎓', name:'শিক্ষা প্রতিষ্ঠান'},
-  {id:'courier',  icon:'📦', name:'কুরিয়ার সার্ভিস'},
-  {id:'video',    icon:'▶️', name:'ভিডিও দেখুন'},
-  {id:'matrimony',icon:'💒', name:'পাত্র-পাত্রী'},
-  {id:'salon',    icon:'💇', name:'পার্লার ও সেলুন'},
-  {id:'website',  icon:'🌐', name:'ওয়েবসাইট'},
-  {id:'rep',      icon:'🤝', name:'জনপ্রতিনিধি'},
+const DEFAULT_CATS=[
+  {id:'doctor',icon:'👨‍⚕️',name:'ডাক্তার'},{id:'hospital',icon:'🏥',name:'হাসপাতাল'},
+  {id:'diagnostic',icon:'🔬',name:'ডায়াগনস্টিক'},{id:'blood',icon:'🩸',name:'রক্তদান'},
+  {id:'transport',icon:'🚗',name:'গাড়ি ভাড়া'},{id:'emergency',icon:'🆘',name:'জরুরী নাম্বার'},
+  {id:'shopping',icon:'🛒',name:'ক্রয় ও বিক্রয়'},{id:'fire',icon:'🔥',name:'ফায়ার সার্ভিস'},
+  {id:'police',icon:'👮',name:'থানা-পুলিশ'},{id:'lawyer',icon:'⚖️',name:'আইনজীবী'},
+  {id:'job',icon:'💼',name:'চাকরি'},{id:'teacher',icon:'📚',name:'শিক্ষক'},
+  {id:'rent',icon:'🏠',name:'বাসা ভাড়া'},{id:'land',icon:'🏗️',name:'ফ্ল্যাট ও জমি'},
+  {id:'entrepreneur',icon:'🚀',name:'উদ্যোক্তা'},{id:'news',icon:'📰',name:'আজকের সুনামগঞ্জ'},
+  {id:'history',icon:'📖',name:'জেলার ইতিহাস'},{id:'bus',icon:'🚌',name:'বাসের সময়সূচি'},
+  {id:'train',icon:'🚂',name:'ট্রেনের সময়সূচি'},{id:'hotel',icon:'🏨',name:'হোটেল'},
+  {id:'restaurant',icon:'🍽️',name:'রেস্তুরেন্ট'},{id:'tourist',icon:'🏞️',name:'দর্শনীয় স্থান'},
+  {id:'mechanic',icon:'🔧',name:'মিস্ত্রি'},{id:'nursery',icon:'🌿',name:'নার্সারি'},
+  {id:'electric',icon:'⚡',name:'বিদ্যুৎ অফিস'},{id:'education',icon:'🎓',name:'শিক্ষা প্রতিষ্ঠান'},
+  {id:'courier',icon:'📦',name:'কুরিয়ার সার্ভিস'},{id:'video',icon:'▶️',name:'ভিডিও দেখুন'},
+  {id:'matrimony',icon:'💒',name:'পাত্র-পাত্রী'},{id:'salon',icon:'💇',name:'পার্লার ও সেলুন'},
+  {id:'website',icon:'🌐',name:'ওয়েবসাইট'},{id:'rep',icon:'🤝',name:'জনপ্রতিনিধি'},
 ];
 
-function renderCategories(cats){
-  const grid = document.getElementById('catsGrid');
-  grid.innerHTML = cats.map(c=>`
-    <a class="cat-item" href="listing.html?cat=${c.id}&name=${encodeURIComponent(c.name)}">
-      <span class="cat-icon">${c.icon}</span>
-      <span class="cat-name">${c.name}</span>
-    </a>`).join('');
+function renderCats(cats){
+  document.getElementById('catsGrid').innerHTML=cats.map(c=>
+    `<a class="cat-item" href="listing.html?cat=${c.id}&name=${encodeURIComponent(c.name)}">
+      <span class="cat-icon">${c.icon}</span><span class="cat-name">${c.name}</span></a>`).join('');
 }
-
-// Load categories from Firestore, fall back to defaults
-async function loadCategories(){
-  try{
-    const snap = await db.collection('categories').orderBy('order').get();
-    if(!snap.empty){
-      renderCategories(snap.docs.map(d=>({id:d.id,...d.data()})));
-    } else {
-      renderCategories(DEFAULT_CATS);
-    }
-  } catch(e){
-    renderCategories(DEFAULT_CATS);
-  }
+async function loadCats(){
+  try{const s=await db.collection('categories').orderBy('order').get();
+    s.empty?renderCats(DEFAULT_CATS):renderCats(s.docs.map(d=>({id:d.id,...d.data()})));
+  }catch{renderCats(DEFAULT_CATS);}
 }
-
-// Load ticker
 async function loadTicker(){
-  try{
-    const doc = await db.collection('settings').doc('site').get();
-    if(doc.exists && doc.data().ticker){
-      document.getElementById('tickerText').textContent = doc.data().ticker;
-    }
-  } catch(e){}
+  try{const d=await db.collection('settings').doc('site').get();
+    if(d.exists&&d.data().ticker) document.getElementById('tickerText').textContent=d.data().ticker;
+  }catch{}
 }
-
-// Search redirect
 document.getElementById('searchInput').addEventListener('keydown',e=>{
-  if(e.key==='Enter' && e.target.value.trim()){
+  if(e.key==='Enter'&&e.target.value.trim())
     location.href='listing.html?search='+encodeURIComponent(e.target.value.trim());
+});
+loadCats();loadTicker();
+
+// AUTH STATE
+let CU=null;
+auth.onAuthStateChanged(async u=>{
+  CU=u;
+  if(u){
+    document.getElementById('profileNavLabel').textContent='প্রোফাইল';
+    document.getElementById('hUserBtn').textContent='😊';
+  } else {
+    document.getElementById('profileNavLabel').textContent='লগইন';
+    document.getElementById('hUserBtn').textContent='👤';
   }
 });
 
-loadCategories();
-loadTicker();
+// MODAL UTILS
+const om=id=>document.getElementById(id).classList.add('open');
+const cm=id=>document.getElementById(id).classList.remove('open');
+const cib=(e,id)=>{if(e.target===document.getElementById(id))cm(id);};
 
-// Toast helper
-window.toast = (msg)=>{
+function openAuthOrProfile(){
+  if(CU){
+    document.getElementById('authForms').style.display='none';
+    document.getElementById('profPanel').style.display='';
+    document.getElementById('pNm').textContent=CU.displayName||'ব্যবহারকারী';
+    document.getElementById('pEm').textContent=CU.email;
+  } else {
+    document.getElementById('authForms').style.display='';
+    document.getElementById('profPanel').style.display='none';
+    swTab('l');
+  }
+  om('authMo');
+}
+
+function swTab(t){
+  document.getElementById('tabL').classList.toggle('active',t==='l');
+  document.getElementById('tabR').classList.toggle('active',t==='r');
+  document.getElementById('fL').style.display=t==='l'?'':'none';
+  document.getElementById('fR').style.display=t==='r'?'':'none';
+}
+
+async function doLogin(){
+  const em=document.getElementById('lEm').value.trim();
+  const pw=document.getElementById('lPw').value;
+  const er=document.getElementById('lErr');
+  er.style.display='none';
+  if(!em||!pw){er.textContent='সব তথ্য পূরণ করুন';er.style.display='block';return;}
+  const b=document.getElementById('lBtn');b.disabled=true;b.textContent='লগইন হচ্ছে...';
+  try{
+    await auth.signInWithEmailAndPassword(em,pw);
+    cm('authMo');showToast('লগইন সফল হয়েছে ✅','ok');
+  }catch(e){
+    const m={'auth/user-not-found':'ইমেইল পাওয়া যায়নি','auth/wrong-password':'পাসওয়ার্ড ভুল',
+      'auth/invalid-email':'ইমেইল সঠিক নয়','auth/invalid-credential':'ইমেইল বা পাসওয়ার্ড ভুল',
+      'auth/too-many-requests':'অনেকবার চেষ্টা হয়েছে, পরে চেষ্টা করুন'};
+    er.textContent=m[e.code]||'লগইন সমস্যা হয়েছে';er.style.display='block';
+  }
+  b.disabled=false;b.textContent='লগইন করুন';
+}
+
+async function doRegister(){
+  const nm=document.getElementById('rNm').value.trim();
+  const em=document.getElementById('rEm').value.trim();
+  const pw=document.getElementById('rPw').value;
+  const er=document.getElementById('rErr');
+  er.style.display='none';
+  if(!nm||!em||!pw){er.textContent='সব তথ্য পূরণ করুন';er.style.display='block';return;}
+  if(pw.length<6){er.textContent='পাসওয়ার্ড কমপক্ষে ৬ অক্ষর হতে হবে';er.style.display='block';return;}
+  const b=document.getElementById('rBtn');b.disabled=true;b.textContent='নিবন্ধন হচ্ছে...';
+  try{
+    const c=await auth.createUserWithEmailAndPassword(em,pw);
+    await c.user.updateProfile({displayName:nm});
+    await db.collection('users').doc(c.user.uid).set(
+      {name:nm,email:em,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
+    cm('authMo');showToast('নিবন্ধন সফল! স্বাগতম 🎉','ok');
+  }catch(e){
+    const m={'auth/email-already-in-use':'এই ইমেইল দিয়ে আগেই অ্যাকাউন্ট আছে',
+      'auth/invalid-email':'ইমেইল সঠিক নয়','auth/weak-password':'পাসওয়ার্ড দুর্বল'};
+    er.textContent=m[e.code]||'নিবন্ধন সমস্যা হয়েছে';er.style.display='block';
+  }
+  b.disabled=false;b.textContent='নিবন্ধন করুন';
+}
+
+async function doLogout(){
+  await auth.signOut();cm('authMo');showToast('লগআউট হয়েছে','ok');
+}
+
+// SUBMIT
+let siFile=null;
+function prevSImg(e){
+  const f=e.target.files[0];if(!f)return;siFile=f;
+  const r=new FileReader();
+  r.onload=ev=>{
+    const i=document.getElementById('siPrev');i.src=ev.target.result;i.style.display='block';
+    document.getElementById('siPh').style.display='none';
+  };r.readAsDataURL(f);
+}
+
+function openSubmitModal(){
+  if(!CU){openAuthOrProfile();showToast('এন্ট্রি যোগ করতে লগইন করুন','bad');return;}
+  om('subMo');
+}
+
+async function submitEntry(){
+  const ct=document.getElementById('sCt').value;
+  const ti=document.getElementById('sTi').value.trim();
+  const er=document.getElementById('sErr');
+  er.style.display='none';
+  if(!ct||!ti){er.textContent='ক্যাটাগরি ও শিরোনাম আবশ্যক';er.style.display='block';return;}
+  const b=document.getElementById('sBtn');b.disabled=true;b.textContent='জমা দেওয়া হচ্ছে...';
+  try{
+    let imageUrl='';
+    if(siFile){
+      const r=new FileReader();
+      imageUrl=await new Promise((res,rej)=>{r.onload=()=>res(r.result);r.onerror=rej;r.readAsDataURL(siFile);});
+    }
+    await db.collection('pending').add({
+      category:ct,title:ti,
+      thana:document.getElementById('sTh').value,
+      specialty:document.getElementById('sSp').value.trim(),
+      phone:document.getElementById('sPh').value.trim(),
+      address:document.getElementById('sAd').value.trim(),
+      timing:document.getElementById('sTm').value.trim(),
+      mapUrl:document.getElementById('sMp').value.trim(),
+      description:document.getElementById('sDc').value.trim(),
+      imageUrl,
+      submittedBy:CU.uid,   // stored for admin only, never shown publicly
+      status:'pending',
+      submittedAt:firebase.firestore.FieldValue.serverTimestamp(),
+    });
+    cm('subMo');clearSub();
+    showToast('জমা দেওয়া হয়েছে! অনুমোদনের অপেক্ষায় 📤','ok');
+  }catch(e){er.textContent='সমস্যা: '+e.message;er.style.display='block';}
+  b.disabled=false;b.textContent='📤 জমা দিন (অনুমোদনের জন্য)';
+}
+
+function clearSub(){
+  ['sCt','sTh','sTi','sSp','sPh','sAd','sTm','sMp','sDc'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('siPrev').style.display='none';
+  document.getElementById('siPh').style.display='';siFile=null;
+}
+
+async function viewMySubs(){
+  cm('authMo');om('mySubMo');
+  try{
+    const s=await db.collection('pending').where('submittedBy','==',CU.uid)
+      .orderBy('submittedAt','desc').get();
+    if(s.empty){document.getElementById('mySubList').innerHTML='<p style="color:var(--muted);text-align:center;font-size:.88rem;padding:1rem">কোনো জমা নেই</p>';return;}
+    document.getElementById('mySubList').innerHTML=s.docs.map(d=>{
+      const e=d.data();
+      const st=e.status==='approved'?'<span style="color:#10b981;font-weight:700">✅ অনুমোদিত</span>':
+               e.status==='rejected'?'<span style="color:#ef4444;font-weight:700">❌ প্রত্যাখ্যাত</span>':
+               '<span style="color:#f59e0b;font-weight:700">⏳ অপেক্ষায়</span>';
+      return `<div style="padding:.65rem 0;border-bottom:1px solid var(--border)">
+        <div style="font-weight:700;font-size:.9rem">${e.title}</div>
+        <div style="font-size:.76rem;color:var(--primary)">${e.category||''} ${e.thana?'· '+e.thana:''}</div>
+        <div style="font-size:.78rem;margin-top:.18rem">${st}</div>
+      </div>`;
+    }).join('');
+  }catch{document.getElementById('mySubList').innerHTML='<p style="color:var(--danger);font-size:.85rem">ডেটা লোড সমস্যা</p>';}
+}
+
+function showToast(msg,type=''){
   const t=document.getElementById('toast');
-  t.textContent=msg;t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2500);
-};
+  t.textContent=msg;t.className='show '+(type||'');
+  setTimeout(()=>t.className='',2800);
+}
 </script>
 </body>
 </html>
